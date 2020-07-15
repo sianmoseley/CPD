@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "470044470032",
+    "firebase_url": "https://cpdjournal-f42a3.firebaseio.com",
+    "project_id": "cpdjournal-f42a3",
+    "storage_bucket": "cpdjournal-f42a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470044470032:android:a5b175becefcbbb53d1395",
+        "android_client_info": {
+          "package_name": "com.example.cpd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470044470032-r61ch9tucojes1mpk3c2hidq4j07qhjb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt3RXBdNpUoio-jKfXE5lR6b2LInTA6lM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470044470032-r61ch9tucojes1mpk3c2hidq4j07qhjb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

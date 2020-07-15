@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="CPD">
+        <menu>
+            <item
+                android:id="@+id/cpdStandards"
+                android:icon="@drawable/ic_baseline_check_24"
+                android:title="CPD Standards" />
+            <item
+                android:id="@+id/activities"
+                android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+                android:title="My CPD Activities" />
+            <item
+                android:id="@+id/addActivity"
+                android:icon="@drawable/ic_baseline_note_add_24"
+                android:title="Add CPD Activity" />
+            <item
+                android:id="@+id/calendar"
+                android:icon="@drawable/ic_baseline_event_24"
+                android:title="My CPD Calendar"/>
+        </menu>
+    </item>
+    <item android:title="Audit">
+        <menu>
+            <item
+                android:id="@+id/auditBuilder"
+                android:icon="@drawable/ic_baseline_build_24"
+                android:title="Audit Builder"/>
+            <item
+                android:id="@+id/export"
+                android:icon="@drawable/ic_baseline_email_24"
+                android:title="Export to Email"/>
+        </menu>
+    </item>
+    <item android:title="My Account">
+        <menu>
+            <item
+                android:id="@+id/myAccount"
+                android:icon="@drawable/ic_baseline_account_box_24"
+                android:title="My Account" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_baseline_vpn_key_24"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

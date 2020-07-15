@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/addActivityName"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:ems="10"
+                android:hint="Activity Name"
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.023" />
+
+            <TextView
+                android:id="@+id/cpdDate"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:ems="10"
+                android:hint="Date Completed"
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addActivityName"
+                app:layout_constraintVertical_bias="0.02" />
+
+            <Spinner
+                android:id="@+id/cpdMins"
+                android:layout_width="100dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="56dp"
+                android:entries="@array/cpdMins"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/cpdHours"
+                app:layout_constraintTop_toBottomOf="@+id/cpdDate" />
+
+            <Spinner
+                android:id="@+id/cpdHours"
+                android:layout_width="100dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="8dp"
+                android:entries="@array/cpdHours"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpdDate" />
+
+            <Spinner
+                android:id="@+id/cpdType"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:entries="@array/cpdType"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpdHours"
+                app:layout_constraintVertical_bias="0.017" />
+
+
+            <EditText
+                android:id="@+id/addActivityDescription"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Description of Activity"
+                android:inputType="textMultiLine"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpdType"
+                app:layout_constraintVertical_bias="0.021" />
+
+            <EditText
+                android:id="@+id/addReflection1"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:hint="What did you do?"
+                android:inputType="textMultiLine"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addActivityDescription" />
+
+            <EditText
+                android:id="@+id/addReflection2"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:hint="What did you learn?"
+                android:inputType="textMultiLine"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addReflection1" />
+
+            <EditText
+                android:id="@+id/addReflection3"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:hint="What would you do now differently?"
+                android:inputType="textMultiLine"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addReflection2" />
+
+            <EditText
+                android:id="@+id/addReflection4"
+                android:layout_width="300dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:hint="Who has benefited?"
+                android:inputType="textMultiLine"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addReflection3" />
+
+            <Button
+                android:id="@+id/addDocBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Add Photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.212"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addReflection4"
+                app:layout_constraintVertical_bias="0.011" />
+
+            <Button
+                android:id="@+id/galleryBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Gallery"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.819"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addReflection4"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/imgPreview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addDocBtn" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/supportingDoc" />
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
