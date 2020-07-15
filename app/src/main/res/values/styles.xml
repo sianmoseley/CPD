@@ -9,9 +9,9 @@
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#007EB8</item>
-        <item name="colorPrimaryDark">#007EB8</item>
-        <item name="colorAccent">#007EB8</item>
+        <item name="colorPrimary">#3FABD9</item>
+        <item name="colorPrimaryDark">#1E82C2</item>
+        <item name="colorAccent">#BA324F</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

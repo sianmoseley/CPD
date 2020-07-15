@@ -235,7 +235,7 @@ public class AddActivity extends AppCompatActivity {
                 String aRef3 = cpdRef3.getText().toString();
                 String aRef4 = cpdRef4.getText().toString();
 
-                //TODO: DATE FIELD CAN BE EMPTY, NEEDS TO BE FIXED
+
                 if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
                         || aRef3.isEmpty() || aRef4.isEmpty()) {
                     Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
@@ -261,13 +261,13 @@ public class AddActivity extends AppCompatActivity {
                 activity.put("Activity_Ref2", aRef2);
                 activity.put("Activity_Ref3", aRef3);
                 activity.put("Activity_Ref4", aRef4);
-                //TODO: NEED TO ADD REFERENCE TO IMAGE UPLOADED WITH ACTIVITY
+
 
                 documentReference.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AddActivity.this, "Activity Added", Toast.LENGTH_SHORT).show();
-                        //TODO: when activity added, go to MyActivities screen, not MainActivity
+
                         onBackPressed();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
