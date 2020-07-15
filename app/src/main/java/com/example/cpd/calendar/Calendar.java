@@ -1,4 +1,4 @@
-package com.example.cpd;
+package com.example.cpd.calendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.example.cpd.R;
 
 public class Calendar extends AppCompatActivity {
 

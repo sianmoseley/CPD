@@ -1,4 +1,4 @@
-package com.example.cpd;
+package com.example.cpd.calendar;
 
 public class DBStructure {
     public static final String DB_NAME = "EVENTS_DB";

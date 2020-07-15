@@ -263,6 +263,7 @@ public class CustomCalendarView extends LinearLayout {
 
     private void SaveEvent(String event,String time,String date, String month,String year,String notify){
 
+        //ADDS DATA TO FIREBASE
         fStore = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -290,7 +291,7 @@ public class CustomCalendarView extends LinearLayout {
             }
         });
 
-
+        //ADDS DATA TO MYSQL DATABASE
         dbOpenHelper = new DBOpenHelper(context);
         SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
         dbOpenHelper.SaveEvent(event,time,date,month,year,notify,database);

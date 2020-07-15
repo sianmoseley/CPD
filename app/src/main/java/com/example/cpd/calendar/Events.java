@@ -1,4 +1,4 @@
-package com.example.cpd;
+package com.example.cpd.calendar;
 
 public class Events {
     String EVENT, TIME, DATE, MONTH, YEAR;
