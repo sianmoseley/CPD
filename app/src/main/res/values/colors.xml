@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#1E82C2</color>
     <color name="colorAccent">#BA324F</color>
     <color name="green">@android:color/holo_green_dark</color>
+    <color name="pie_green">#2ecc71</color>
+    <color name="pie_yellow">#f1c40f</color>
+    <color name="pie_red">#e74c3c</color>
+    <color name="pie_blue">#3498db</color>
+    <color name="pie_purple">#512DA8</color>
+
 </resources>

@@ -37,6 +37,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.cpd.MainActivity;
 import com.example.cpd.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -322,6 +323,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void uploadToFirebase() {
+        //IF USER ADDS IMAGE - SAVES IMAGE TO FIRESTORE THEN FIREBASE
         if (imgUrl != null){
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = timeStamp + ".JPEG";
@@ -393,6 +395,7 @@ public class AddActivity extends AppCompatActivity {
             }
             );
         }
+        //IF USER DOES NOT ADD IMAGE
         else {
 
             String aName = cpdName.getText().toString();
@@ -459,6 +462,12 @@ public class AddActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //OVERRIDE BACK PRESSED METHOD TO RESTART MAIN ACTIVITY CLASS SO PIE CHART UPDATES CORRECTLY
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
 }
 
 

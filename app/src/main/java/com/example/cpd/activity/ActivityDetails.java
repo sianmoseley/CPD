@@ -3,6 +3,7 @@ package com.example.cpd.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.cpd.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 public class ActivityDetails extends AppCompatActivity {
 
@@ -57,6 +59,10 @@ public class ActivityDetails extends AppCompatActivity {
         aDetailsRef2.setText(data.getStringExtra("Activity_Ref2"));
         aDetailsRef3.setText(data.getStringExtra("Activity_Ref3"));
         aDetailsRef4.setText(data.getStringExtra("Activity_Ref4"));
+        String imgUrl = data.getStringExtra("Image_URL");
+        Picasso.get().load(imgUrl).into(aImagePrev);
+
+
 
 
         FloatingActionButton fab = findViewById(R.id.editBtn);
@@ -75,6 +81,7 @@ public class ActivityDetails extends AppCompatActivity {
                 i.putExtra("Activity_Ref3", data.getStringExtra("Activity_Ref3"));
                 i.putExtra("Activity_Ref4", data.getStringExtra("Activity_Ref4"));
                 i.putExtra("Activity_ID", data.getStringExtra("Activity_ID"));
+                i.putExtra("Image_URL", data.getStringExtra("Image_URL"));
                 startActivity(i);
 
 

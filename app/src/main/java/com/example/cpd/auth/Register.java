@@ -45,8 +45,6 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        //SET TITLE
-        getSupportActionBar().setTitle("Create Account");
         //ENABLE BACK BUTTON
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

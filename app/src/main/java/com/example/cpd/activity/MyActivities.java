@@ -2,6 +2,7 @@ package com.example.cpd.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +47,7 @@ public class MyActivities extends AppCompatActivity {
     FirestoreRecyclerAdapter<Activity, MyActivities.ActivityViewHolder> activityAdapter;
     FirebaseUser user;
     FirebaseAuth fAuth;
+    FloatingActionButton floatBtnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,7 @@ public class MyActivities extends AppCompatActivity {
                         i.putExtra("Activity_Ref2", activity.getActivity_Ref2());
                         i.putExtra("Activity_Ref3", activity.getActivity_Ref3());
                         i.putExtra("Activity_Ref4", activity.getActivity_Ref4());
+                        i.putExtra("Image_URL", activity.getImage_URL());
                         i.putExtra("Activity_ID", docId);
                         v.getContext().startActivity(i);
                     }
@@ -120,6 +125,7 @@ public class MyActivities extends AppCompatActivity {
                                 i.putExtra("Activity_Ref2", activity.getActivity_Ref2());
                                 i.putExtra("Activity_Ref3",activity.getActivity_Ref3() );
                                 i.putExtra("Activity_Ref4",activity.getActivity_Ref4() );
+                                i.putExtra("Image_URL", activity.getImage_URL());
                                 i.putExtra("Activity_ID", docID);
                                 startActivity(i);
                                 return false;
@@ -129,26 +135,38 @@ public class MyActivities extends AppCompatActivity {
                         menu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-
-                                DocumentReference docRef = fStore.collection("cpdActivities")
-                                        .document(user.getUid())
-                                        .collection("myCPD")
-                                        .document(docId);
-                                docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                AlertDialog.Builder deleteActivity = new AlertDialog.Builder(v.getContext());
+                                deleteActivity.setTitle("Are you sure you want to delete this activity?");
+                                deleteActivity.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
-                                        //ACTIVITY DELETED
-                                        //REFRESH THE RECYCLER VIEW WITH THE EDITED DATA SO ARRAY LIST IS UPDATED
-                                        notifyDataSetChanged();
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        DocumentReference docRef = fStore.collection("cpdActivities")
+                                                .document(user.getUid())
+                                                .collection("myCPD")
+                                                .document(docId);
+                                        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //ACTIVITY DELETED
+                                                //REFRESH THE RECYCLER VIEW WITH THE EDITED DATA SO ARRAY LIST IS UPDATED
+                                                notifyDataSetChanged();
 
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(MyActivities.this, "Error in deleting activity", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
                                     }
-                                }).addOnFailureListener(new OnFailureListener() {
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(MyActivities.this, "Error in deleting activity", Toast.LENGTH_SHORT).show();
-
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //close the dialog
                                     }
                                 });
+                                deleteActivity.create().show();
                                 return false;
                             }
                         });
@@ -168,6 +186,16 @@ public class MyActivities extends AppCompatActivity {
 
         activityList.setLayoutManager(new LinearLayoutManager(this));
         activityList.setAdapter(activityAdapter);
+
+
+        floatBtnAdd = findViewById(R.id.floatBtnAdd);
+
+        floatBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), AddActivity.class));
+            }
+        });
     }
 
     public class ActivityViewHolder extends RecyclerView.ViewHolder {
@@ -196,7 +224,7 @@ public class MyActivities extends AppCompatActivity {
         }
     }
 
-    //WHEN BACK BUTTON IS CLICKED, SEND THEM BACK TO PREVIOUS PAGE
+    //WHEN BACK BUTTON IS CLICKED, SEND THEM BACK TO MAIN ACTIVITY
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
@@ -204,6 +232,12 @@ public class MyActivities extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
 

@@ -11,9 +11,9 @@
     </string-array>
     <string-array name="cpdMins">
         <item>0</item>
-        <item>15</item>
-        <item>30</item>
-        <item>45</item>
+        <item>0.15</item>
+        <item>0.30</item>
+        <item>0.45</item>
     </string-array>
     <string-array name="cpdHours">
         <item>0</item>
