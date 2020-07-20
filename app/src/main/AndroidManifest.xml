@@ -15,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AuditHome"
+            android:label="Audit Builder"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".AuditBuilder"
+            android:label="Select Activities"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- TODO: I always forget this bit above! -->
+        <activity
             android:name=".calendar.Calendar"
             android:label="My CPD Calendar"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -59,13 +68,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".auth.Register" />
-        <activity
-            android:name=".auth.Login" />
+        <activity android:name=".auth.Register" />
+        <activity android:name=".auth.Login" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"

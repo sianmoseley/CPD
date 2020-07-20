@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
         });
 
+        //TODO: NEED NEW QUERY/WAY TO ADD UP TOTAL HOURS/MINS TO DISPLAY HERE
         welcomeText = findViewById(R.id.welcomeText);
         welcomeText.setText("Welcome to CPD Journal. You have completed X hours.");
 
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
         });
 
-        
+
 
 
         //TODO: FIX PIE CHART LAYOUT STUFF
@@ -362,6 +363,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 break;
             case R.id.calendar:
                 startActivity(new Intent(this, Calendar.class));
+                break;
+            case R.id.auditBuilder:
+                startActivity(new Intent(this, AuditHome.class));
                 break;
 
             default:
