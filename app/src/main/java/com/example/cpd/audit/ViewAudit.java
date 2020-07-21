@@ -34,6 +34,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ViewAudit extends AppCompatActivity {
 
     RecyclerView auditViewList;
@@ -58,8 +61,9 @@ public class ViewAudit extends AppCompatActivity {
         user = fAuth.getCurrentUser();
         auditViewList = findViewById(R.id.auditViewList);
 
-        saveProfileBtn = findViewById(R.id.saveProfileBtn);
 
+
+        //CODE TO DISPLAY WHAT USER HAD ENTERED IN CPD PROFILE CLASS
         professionText = findViewById(R.id.professionText);
         professionText.setText(getIntent().getStringExtra("Profession_Text"));
 
@@ -72,12 +76,51 @@ public class ViewAudit extends AppCompatActivity {
         personalStatementText = findViewById(R.id.personalStatementText);
         personalStatementText.setText(getIntent().getStringExtra("Personal_Statement"));
 
+        //BUTTON CLICK TO SAVE EDIT TEXT FIELDS TO FIREBASE WITH SELECTED ACTIVITIES FOR AUDIT
+        saveProfileBtn = findViewById(R.id.saveProfileBtn);
+
+        saveProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DocumentReference documentReference = fStore.collection("audits")
+                        .document(user.getUid())
+                        .collection("myAuditText")
+                        .document("myAudit");
+
+                String profText = professionText.getText().toString();
+                String cpdNum = cpdNumberText.getText().toString();
+                String sumText = summaryText.getText().toString();
+                String psText = personalStatementText.getText().toString();
+
+                Map<String, Object> auditText = new HashMap<>();
+                auditText.put("Profession", profText);
+                auditText.put("CPD_Number", cpdNum);
+                auditText.put("Summary_Text", sumText);
+                auditText.put("Personal_Statement", psText);
+
+                documentReference.set(auditText).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(ViewAudit.this, "Audit saved", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(ViewAudit.this, AuditHome.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ViewAudit.this, "Error, audit not saved.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
 
-        //QUERY DATABASE TO DISPLAY CPD ACTIVITIES
+
+
+
+        //QUERY DATABASE TO DISPLAY SELECTED CPD ACTIVITIES FOR AUDIT
         Query query = fStore.collection("audits")
                 .document(user.getUid())
-                .collection("myAudit")
+                .collection("myAuditActivities")
                 .orderBy("Activity_Date", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Activity> viewAuditBuilder = new FirestoreRecyclerOptions.Builder<Activity>()
@@ -127,7 +170,7 @@ public class ViewAudit extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         DocumentReference documentReference = fStore.collection("audits")
                                                 .document(user.getUid())
-                                                .collection("myAudit")
+                                                .collection("myAuditActivities")
                                                 .document(docID);
                                         documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override

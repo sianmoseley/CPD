@@ -121,7 +121,7 @@ public class AuditBuilder extends AppCompatActivity {
                             //ADD DOCUMENT ID TO DATABASE
                             DocumentReference documentReference = fStore.collection("audits")
                                     .document(user.getUid())
-                                    .collection("myAudit")
+                                    .collection("myAuditActivities")
                                     .document(docId);
 
 
@@ -156,7 +156,7 @@ public class AuditBuilder extends AppCompatActivity {
                             //CHECKBOX UNCHECKED, DELETES FROM AUDIT TABLE
                             DocumentReference docRef = fStore.collection("audits")
                                     .document(user.getUid())
-                                    .collection("myAudit")
+                                    .collection("myAuditActivities")
                                     .document(docId);
                             docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
