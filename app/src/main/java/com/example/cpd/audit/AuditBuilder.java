@@ -1,4 +1,4 @@
-package com.example.cpd;
+package com.example.cpd.audit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,27 +8,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cpd.R;
 import com.example.cpd.activity.ActivityDetails;
 import com.example.cpd.model.Activity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -42,7 +41,9 @@ public class AuditBuilder extends AppCompatActivity {
     FirestoreRecyclerAdapter<Activity, AuditBuilder.AuditViewHolder> auditAdapter;
     FirebaseUser user;
     FirebaseAuth fAuth;
-    String auditDocId;
+    TextView activityHelper, professionEditText, cpdNumberEditText, summaryEditText, personalStatementEditText;
+    Button viewAuditProgress;
+
 
 
     @Override
@@ -58,6 +59,42 @@ public class AuditBuilder extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
         auditList = findViewById(R.id.auditList);
+        activityHelper = findViewById(R.id.activityHelper);
+        viewAuditProgress = findViewById(R.id.viewAuditProgress);
+
+        professionEditText = findViewById(R.id.professionEditText);
+        professionEditText.setText(getIntent().getStringExtra("Profession_Text"));
+        professionEditText.setVisibility(View.INVISIBLE);
+
+        cpdNumberEditText = findViewById(R.id.cpdNumberEditText);
+        cpdNumberEditText.setText(getIntent().getStringExtra("CPD_Number"));
+        cpdNumberEditText.setVisibility(View.INVISIBLE);
+
+        summaryEditText = findViewById(R.id.summaryEditText);
+        summaryEditText.setText(getIntent().getStringExtra("Summary_Text"));
+        summaryEditText.setVisibility(View.INVISIBLE);
+
+        personalStatementEditText = findViewById(R.id.personalStatementEditText);
+        personalStatementEditText.setText(getIntent().getStringExtra("Personal_Statement"));
+        personalStatementEditText.setVisibility(View.INVISIBLE);
+
+
+
+
+
+        //BUTTON CLICK
+        viewAuditProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewAudit.class);
+                intent.putExtra("Profession_Text", professionEditText.getText().toString());
+                intent.putExtra("CPD_Number", cpdNumberEditText.getText().toString());
+                intent.putExtra("Summary_Text", summaryEditText.getText().toString());
+                intent.putExtra("Personal_Statement", personalStatementEditText.getText().toString());
+                startActivity(intent);
+            }
+        });
+
 
         //QUERY DATABASE TO DISPLAY CPD ACTIVITIES
         Query query = fStore.collection("cpdActivities")
@@ -81,19 +118,27 @@ public class AuditBuilder extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked){
-
                             //ADD DOCUMENT ID TO DATABASE
                             DocumentReference documentReference = fStore.collection("audits")
                                     .document(user.getUid())
                                     .collection("myAudit")
-                                    .document();
-
-                            auditDocId = documentReference.getId();
+                                    .document(docId);
 
 
                             Map<String, Object> audit = new HashMap<>();
-                            //TODO: MIGHT NEED TO PULL ALL ACTIVITY DETAILS HERE INSTEAD OF JUST ID TO LIST IN VIEW AUDIT SCREEN
+
                             audit.put("Activity_ID", docId);
+                            audit.put("Activity_Name", activity.getActivity_Name());
+                            audit.put("Activity_Description", activity.getActivity_Description());
+                            audit.put("Activity_Type", activity.getActivity_Type());
+                            audit.put("Activity_Date", activity.getActivity_Date());
+                            audit.put("Activity_Hours", activity.getActivity_Hours());
+                            audit.put("Activity_Mins", activity.getActivity_Mins());
+                            audit.put("Activity_Ref1", activity.getActivity_Ref1());
+                            audit.put("Activity_Ref2", activity.getActivity_Ref2());
+                            audit.put("Activity_Ref3", activity.getActivity_Ref3());
+                            audit.put("Activity_Ref4", activity.getActivity_Ref4());
+                            audit.put("Image_URL", activity.getImage_URL());
 
                             documentReference.set(audit).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -108,20 +153,20 @@ public class AuditBuilder extends AppCompatActivity {
                             });
 
                         } else {
+                            //CHECKBOX UNCHECKED, DELETES FROM AUDIT TABLE
                             DocumentReference docRef = fStore.collection("audits")
                                     .document(user.getUid())
                                     .collection("myAudit")
-                                    .document(auditDocId);
+                                    .document(docId);
                             docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(AuditBuilder.this, "Activity removed from Audit", Toast.LENGTH_SHORT).show();
-                                    notifyDataSetChanged();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-
+                                    Toast.makeText(AuditBuilder.this, "Error, try again", Toast.LENGTH_SHORT).show();
                                 }
                             });
 

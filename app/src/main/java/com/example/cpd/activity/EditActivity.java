@@ -289,6 +289,7 @@ public class EditActivity extends AppCompatActivity {
 
 
                         //SAVE EDITED NOTE
+                        //TODO: ALSO NEED TO CHECK IF NOTE IS IN AUDIT TABLE AND IF SO, UPDATE RECORD THERE
                         DocumentReference documentReference = fStore.collection("cpdActivities")
                                 .document(user.getUid())
                                 .collection("myCPD")

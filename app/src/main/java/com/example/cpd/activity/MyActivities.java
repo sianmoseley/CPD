@@ -150,6 +150,7 @@ public class MyActivities extends AppCompatActivity {
                                                 //ACTIVITY DELETED
                                                 //REFRESH THE RECYCLER VIEW WITH THE EDITED DATA SO ARRAY LIST IS UPDATED
                                                 notifyDataSetChanged();
+                                                Toast.makeText(MyActivities.this, "Activity Deleted", Toast.LENGTH_SHORT).show();
 
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {

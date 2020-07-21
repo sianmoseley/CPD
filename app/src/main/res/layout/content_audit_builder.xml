@@ -15,16 +15,77 @@
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/auditList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/activityHelper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please select all the examples of CPD evidence that you would like to include in your CPD profile. \n\nThis should be a range of CPD activities undertaken since you last renewed your registration. This selection shows how you meet CPD standard 1. \n\nYou may have a large amount of evidence relating to certain activities. However, you do not need to send us all of this information, you only need to include evidence to support the activities selected for your profile."
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                android:layout_margin="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/professionEditText"
+                app:layout_constraintTop_toBottomOf="@id/activityHelper"
+                android:text="TextView"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cpdNumberEditText"
+                android:text="TextView"
+                app:layout_constraintTop_toBottomOf="@id/activityHelper"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/summaryEditText"
+                android:text="TextView"
+                app:layout_constraintTop_toBottomOf="@id/activityHelper"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/personalStatementEditText"
+                android:text="TextView"
+                app:layout_constraintTop_toBottomOf="@id/activityHelper"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/auditList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/professionEditText"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <LinearLayout
+                android:id="@+id/next_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/auditList">
+
+                <Button
+                    android:id="@+id/viewAuditProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Next"/>
+
+            </LinearLayout>
+
+
+
+    
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

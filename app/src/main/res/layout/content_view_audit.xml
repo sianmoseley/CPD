@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#007EB8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+    <TextView
+        android:id="@+id/professionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profession:"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
+
+    <TextView
+        android:id="@+id/professionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/professionTitle" />
+
+    <TextView
+        android:id="@+id/cpdTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CPD Number:"
+        app:layout_constraintTop_toBottomOf="@+id/professionText"/>
+
+
+    <TextView
+        android:id="@+id/cpdNumberText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/cpdTitle" />
+
+    <TextView
+        android:id="@+id/summaryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Summary:"
+        app:layout_constraintTop_toBottomOf="@+id/cpdNumberText"/>
+
+
+    <TextView
+        android:id="@+id/summaryText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/summaryTitle" />
+
+    <TextView
+        android:id="@+id/personalStatementTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Personal Statement:"
+        app:layout_constraintTop_toBottomOf="@+id/summaryText"/>
+
+
+    <TextView
+        android:id="@+id/personalStatementText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/personalStatementTitle" />
+
+
+
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/auditViewList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personalStatementText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/save_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/auditViewList">
+
+        <Button
+            android:id="@+id/saveProfileBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Profile"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

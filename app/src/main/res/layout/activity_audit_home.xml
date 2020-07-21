@@ -23,30 +23,33 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--TODO: WILL NEED LAYOUT WORK THIS IS UGLY-->
-    <Button
-        android:id="@+id/auditListBtn"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/howToTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:text="Select Activities"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        android:text="How to complete your Continuing Professional Development Audit Profile."
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        android:layout_margin="16dp"/>
+
+    <!--TODO: SEE HCCP HOW TO COMPLETE CPD PROFILE PDF FOR TEXT NEEDED HERE -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/howToTitle"
+        android:text="If you have been randomly selected to complete a CPD audit, you will need to complete the following steps."
+        android:layout_margin="16dp"/>
 
     <Button
-        android:id="@+id/viewAuditBtn"
+        android:id="@+id/startProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="View My Audit"
+        android:text="Start Building Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auditListBtn"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintVertical_bias="0.201" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

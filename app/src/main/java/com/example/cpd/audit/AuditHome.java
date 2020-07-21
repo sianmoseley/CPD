@@ -1,4 +1,4 @@
-package com.example.cpd;
+package com.example.cpd.audit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.cpd.R;
+import com.example.cpd.audit.AuditBuilder;
+
 public class AuditHome extends AppCompatActivity {
 
-    Button auditListBtn;
+    Button startProfileBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +26,17 @@ public class AuditHome extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        auditListBtn = findViewById(R.id.auditListBtn);
-        auditListBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        startProfileBtn = findViewById(R.id.startProfileBtn);
+        startProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), AuditBuilder.class));
+                startActivity(new Intent(v.getContext(), cpdProfile.class));
             }
         });
+
+
     }
 
 

@@ -15,14 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AuditHome"
-            android:label="Audit Builder"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:name=".audit.cpdProfile"
+            android:label="My CPD Profile"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AuditBuilder"
+            android:name=".audit.ViewAudit"
+            android:label="My CPD Audit Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".audit.AuditHome"
+            android:label="Audit Builder"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".audit.AuditBuilder"
             android:label="Select Activities"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- TODO: I always forget this bit above! -->
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".calendar.Calendar"
             android:label="My CPD Calendar"
