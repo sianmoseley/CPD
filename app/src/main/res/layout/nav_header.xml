@@ -8,27 +8,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="#007EB8">
+        android:background="@color/colorPrimary">
 
-        <TextView
+
+        <ImageView
             android:id="@+id/appTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:lineSpacingExtra="8sp"
-            android:text="CPD Journal"
-            android:textAlignment="viewStart"
-            android:textColor="#FFFFFF"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:typeface="normal"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.099"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.31"
+            app:srcCompat="@drawable/logo" />
 
         <TextView
             android:id="@+id/auditYearText"
@@ -48,8 +41,8 @@
             android:id="@+id/auditYearRef"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="168dp"
             android:text="YEAR"
             android:textColor="#FFFFFF"

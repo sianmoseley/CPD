@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
 
-    //TODO: NEEDS WORK
+    //TODO: NEEDS WORK TO ADD MINUTES PROPERLY
     private float calcMins(QuerySnapshot result) {
         totalMins = 0;
         for (QueryDocumentSnapshot document: result){

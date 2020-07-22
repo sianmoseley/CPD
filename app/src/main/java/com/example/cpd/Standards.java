@@ -9,11 +9,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class Standards extends AppCompatActivity {
 
-    TextView standardsTitle, standardOne, standardTwo, standardThree, standardFour, standardFive;
+    TextView standardOne, standardTwo, standardThree, standardFour, standardFive, oneExtra, twoExtra,
+            threeExtra, fourExtra, fiveExtra;
+    ImageButton imgPlus, imgPlus2, imgPlus3, imgPlus4, imgPlus5;
+    int i = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +32,120 @@ public class Standards extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        standardsTitle = findViewById(R.id.standardsTitle);
+
         standardOne = findViewById(R.id.standardOne);
         standardTwo = findViewById(R.id.standardTwo);
         standardThree = findViewById(R.id.standardThree);
         standardFour = findViewById(R.id.standardFour);
         standardFive = findViewById(R.id.standardFive);
+        oneExtra = findViewById(R.id.oneExtra);
+        twoExtra = findViewById(R.id.twoExtra);
+        threeExtra = findViewById(R.id.threeExtra);
+        fourExtra = findViewById(R.id.fourExtra);
+        fiveExtra = findViewById(R.id.fiveExtra);
 
-        standardsTitle.setText("Registrants must:");
+
+        imgPlus = findViewById(R.id.imgPlus);
+        imgPlus2 = findViewById(R.id.imgPlus2);
+        imgPlus3 = findViewById(R.id.imgPlus3);
+        imgPlus4 = findViewById(R.id.imgPlus4);
+        imgPlus5 = findViewById(R.id.imgPlus5);
+
+
+        //SET VISIBILITY TO GONE INITIALLY SO THAT WHITE SPACE IS NOT THERE WHEN ACTIVITY FIRST LOADS
+        oneExtra.setVisibility(View.GONE);
+        twoExtra.setVisibility(View.GONE);
+        threeExtra.setVisibility(View.GONE);
+        fourExtra.setVisibility(View.GONE);
+        fiveExtra.setVisibility(View.GONE);
+
+        imgPlus.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+        imgPlus2.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+        imgPlus3.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+        imgPlus4.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+        imgPlus5.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+
+        imgPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //I IS NUMBER OF CLICKS TO MAKE IT ACT LIKE A TOGGLE BUTTON (BUT WITH CUSTOM IMAGES)
+                if (i == 0){
+                    imgPlus.setBackgroundResource(R.drawable.ic_baseline_remove_24_accent);
+                    oneExtra.setVisibility(View.VISIBLE);
+                    i++;
+                } else if (i == 1){
+                    imgPlus.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+                    oneExtra.setVisibility(View.GONE);
+                    i = 0;
+                }
+            }
+        });
+
+        imgPlus2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i == 0){
+                    imgPlus2.setBackgroundResource(R.drawable.ic_baseline_remove_24_accent);
+                    twoExtra.setVisibility(View.VISIBLE);
+                    i++;
+                } else if (i == 1){
+                    imgPlus2.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+                    twoExtra.setVisibility(View.GONE);
+                    i = 0;
+                }
+            }
+        });
+
+        imgPlus3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i == 0){
+                    imgPlus3.setBackgroundResource(R.drawable.ic_baseline_remove_24_accent);
+                    threeExtra.setVisibility(View.VISIBLE);
+                    i++;
+                } else if (i == 1){
+                    imgPlus3.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+                    threeExtra.setVisibility(View.GONE);
+                    i = 0;
+                }
+            }
+        });
+
+        imgPlus4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i == 0){
+                    imgPlus4.setBackgroundResource(R.drawable.ic_baseline_remove_24_accent);
+                    fourExtra.setVisibility(View.VISIBLE);
+                    i++;
+                } else if (i == 1){
+                    imgPlus4.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+                    fourExtra.setVisibility(View.GONE);
+                    i = 0;
+                }
+            }
+        });
+
+        imgPlus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i == 0){
+                    imgPlus5.setBackgroundResource(R.drawable.ic_baseline_remove_24_accent);
+                    fiveExtra.setVisibility(View.VISIBLE);
+                    i++;
+                } else if (i == 1){
+                    imgPlus5.setBackgroundResource(R.drawable.ic_baseline_add_24_accent);
+                    fiveExtra.setVisibility(View.GONE);
+                    i = 0;
+                }
+            }
+        });
+
+
+
+
+
+
         standardOne.setText("1. Maintain a continuous, up-to-date and accurate record of their CPD activities.");
         standardTwo.setText("2. Demonstrate that their current CPD activities are a mixture of learning activities relevant to current or future practice.");
         standardThree.setText("3. Seek to ensure that their CPD has contributed to the quality of their practice and service delivery.");
