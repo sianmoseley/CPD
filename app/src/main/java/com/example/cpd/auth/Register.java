@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,9 +32,8 @@ import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
-    EditText rfullName, rUserEmail, rUserPass, rUserConfPass;
+    TextInputEditText rfullName, rUserEmail, rUserPass, rUserConfPass;
     Button registerBtn;
-    TextView loginBtn;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -54,7 +54,6 @@ public class Register extends AppCompatActivity {
         rUserConfPass = findViewById(R.id.passwordConfirm);
 
         registerBtn = findViewById(R.id.createAccount);
-        loginBtn = findViewById(R.id.login);
         progressBar = findViewById(R.id.progressBar4);
 
         fAuth = FirebaseAuth.getInstance();
@@ -90,7 +89,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(Register.this, "User created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "Account created", Toast.LENGTH_SHORT).show();
                             userID = fAuth.getCurrentUser().getUid();
                             DocumentReference documentReference = fStore.collection("users").document(userID);
                             Map<String,Object> user = new HashMap<>();
@@ -120,13 +119,6 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        //TO LINK TO A DIFFERENT PAGE
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Login.class));
-            }
-        });
 
 
     }

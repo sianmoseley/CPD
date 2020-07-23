@@ -47,7 +47,6 @@ public class MyActivities extends AppCompatActivity {
     FirestoreRecyclerAdapter<Activity, MyActivities.ActivityViewHolder> activityAdapter;
     FirebaseUser user;
     FirebaseAuth fAuth;
-    FloatingActionButton floatBtnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,15 +187,6 @@ public class MyActivities extends AppCompatActivity {
         activityList.setLayoutManager(new LinearLayoutManager(this));
         activityList.setAdapter(activityAdapter);
 
-
-        floatBtnAdd = findViewById(R.id.floatBtnAdd);
-
-        floatBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), AddActivity.class));
-            }
-        });
     }
 
     public class ActivityViewHolder extends RecyclerView.ViewHolder {

@@ -20,6 +20,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -41,7 +42,11 @@ import com.example.cpd.MainActivity;
 import com.example.cpd.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -61,18 +66,20 @@ import java.util.Map;
 
 public class AddActivity extends AppCompatActivity {
 
-    EditText cpdName, cpdDes, cpdRef1, cpdRef2, cpdRef3, cpdRef4;
-    Spinner cpdTypeSpinner, cpdMinuteSpinner, cpdHourSpinner;
-    TextView mDate;
-    DatePickerDialog.OnDateSetListener mDateSetListener;
-    Button addDocBtn, galleryBtn;
+    TextInputEditText cpdName, cpdDes, cpdRef1, cpdRef2, cpdRef3, cpdRef4;
+
+    TextView rDate;
+
+    TextInputLayout cpdHoursLayout, cpdMinsLayout, cpdTypeLayout;
+    AutoCompleteTextView cpdHours, cpdMins, cpdType;
+
+    Button addDocBtn, galleryBtn, mDate;
     ProgressBar progressBarSave;
     FirebaseFirestore fStore;
-    String selectedType, selectedMins, selectedHours, selectedDate;
     FirebaseUser user;
     ImageView selectedImage;
     StorageReference storageReference;
-    String currentPhotoPath;
+    String currentPhotoPath, selectedType, selectedMins, selectedHours;
     ImageView imgPreview;
     FloatingActionButton fab;
 
@@ -80,6 +87,7 @@ public class AddActivity extends AppCompatActivity {
     public static final int CAMERA_REQUEST_CODE = 102;
     private static final int CHOOSE_IMAGE = 1;
     private Uri imgUrl;
+
 
 
     @Override
@@ -107,103 +115,117 @@ public class AddActivity extends AppCompatActivity {
 
         addDocBtn = findViewById(R.id.addDocBtn);
         galleryBtn = findViewById(R.id.galleryBtn);
-        selectedImage = findViewById(R.id.supportingDoc);
+        selectedImage = findViewById(R.id.imgPreview);
 
         fab = findViewById(R.id.fab);
 
 
-
         //DATE PICKER
         mDate = findViewById(R.id.cpdDate);
-        mDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+        rDate = findViewById(R.id.cpdDateResult);
 
-                DatePickerDialog dialog = new DatePickerDialog(AddActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+        //MATERIAL DATE BUILDER
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Select a date");
+        final MaterialDatePicker materialDatePicker = builder.build();
+
+
+       mDate.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+           }
+       });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                rDate.setText(materialDatePicker.getHeaderText());
             }
         });
 
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                selectedDate = dayOfMonth + "/" + month + "/" + year;
-                mDate.setText(selectedDate);
-            }
+        //CPD HOURS DROPDOWN MENU
+        cpdHoursLayout = findViewById(R.id.cpdHoursLayout);
+        cpdHours = findViewById(R.id.cpdHours);
+
+        String[] hours = new String[]{
+                "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
         };
 
-        //CPD HOUR SPINNER
-        cpdHourSpinner = findViewById(R.id.cpdHours);
-        ArrayAdapter<CharSequence> adapterHours = ArrayAdapter.createFromResource(this,
-                R.array.cpdHours, android.R.layout.simple_spinner_item);
-        //layout for the list of choices to appear
-        adapterHours.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cpdHourSpinner.setAdapter(adapterHours);
+        final ArrayAdapter<String> adapterHours = new ArrayAdapter<>(
+                AddActivity.this,
+                R.layout.dropdown_item,
+                hours
+        );
 
-        cpdHourSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        cpdHours.setAdapter(adapterHours);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)cpdHoursLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedHours = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(AddActivity.this, selectedHours, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapterHours.getItem(position);
+                selectedHours = ((AutoCompleteTextView)cpdHoursLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected hours is: " + selectedHours);
             }
         });
 
-        //CPD MINUTE SPINNER
-        cpdMinuteSpinner = findViewById(R.id.cpdMins);
-        ArrayAdapter<CharSequence> adapterMins = ArrayAdapter.createFromResource(this,
-                R.array.cpdMins, android.R.layout.simple_spinner_item);
-        //layout for the list of choices to appear
-        adapterMins.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cpdMinuteSpinner.setAdapter(adapterMins);
 
-        cpdMinuteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //CPD MINS DROPDOWN MENU
+        cpdMinsLayout = findViewById(R.id.cpdMinsLayout);
+        cpdMins = findViewById(R.id.cpdMins);
+
+        String[] mins = new String[]{
+                "0", "15", "30", "45"
+        };
+
+        final ArrayAdapter<String> adapterMins = new ArrayAdapter<>(
+                AddActivity.this,
+                R.layout.dropdown_item,
+                mins
+        );
+
+        cpdMins.setAdapter(adapterMins);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)cpdMinsLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedMins = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(AddActivity.this, selectedMins, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //CPD TYPE SPINNER
-        cpdTypeSpinner = findViewById(R.id.cpdType);
-        ArrayAdapter<CharSequence> adapterType = ArrayAdapter.createFromResource(this,
-                R.array.cpdType, android.R.layout.simple_spinner_item);
-        //layout for the list of choices to appear
-        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cpdTypeSpinner.setAdapter(adapterType);
-
-        cpdTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedType = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(AddActivity.this, selectedType, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapterMins.getItem(position);
+                selectedMins = ((AutoCompleteTextView)cpdMinsLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected mins is: " + selectedMins);
             }
         });
 
+
+        //CPD TYPE DROPDOWN MENU
+        cpdTypeLayout = findViewById(R.id.cpdTypeLayout);
+        cpdType = findViewById(R.id.cpdType);
+
+        final String[] type = new String[]{
+                "Formal Education Completed", "Other Completed", "Professional Activities", "Self-Directed Learning", "Work-Based Learning"
+        };
+
+        final ArrayAdapter<String> adapterType = new ArrayAdapter<>(
+                AddActivity.this,
+                R.layout.dropdown_item,
+                type
+        );
+
+        cpdType.setAdapter(adapterType);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)cpdTypeLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapterType.getItem(position);
+                selectedType = ((AutoCompleteTextView)cpdTypeLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected type is: " + selectedType);
+            }
+        });
+
+
+        //TAKE PHOTO
         addDocBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,6 +233,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        //SELECT ITEM FROM GALLERY
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,7 +241,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-
+        //TRIGGER SAVE METHOD
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -349,9 +372,11 @@ public class AddActivity extends AppCompatActivity {
                             String aRef2 = cpdRef2.getText().toString();
                             String aRef3 = cpdRef3.getText().toString();
                             String aRef4 = cpdRef4.getText().toString();
+                            String aDate = rDate.getText().toString();
+
 
                             if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
-                                    || aRef3.isEmpty() || aRef4.isEmpty() || selectedDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
+                                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
                                 Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -364,7 +389,7 @@ public class AddActivity extends AppCompatActivity {
 
                             Map<String, Object> activity = new HashMap<>();
                             activity.put("Activity_Name", aName);
-                            activity.put("Activity_Date", selectedDate);
+                            activity.put("Activity_Date", aDate);
                             activity.put("Activity_Hours", selectedHours);
                             activity.put("Activity_Mins", selectedMins);
                             activity.put("Activity_Type", selectedType);
@@ -404,9 +429,10 @@ public class AddActivity extends AppCompatActivity {
             String aRef2 = cpdRef2.getText().toString();
             String aRef3 = cpdRef3.getText().toString();
             String aRef4 = cpdRef4.getText().toString();
+            String aDate = rDate.getText().toString();
 
             if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
-                    || aRef3.isEmpty() || aRef4.isEmpty() || selectedDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
+                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
                 Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -418,7 +444,7 @@ public class AddActivity extends AppCompatActivity {
 
             Map<String, Object> activity = new HashMap<>();
             activity.put("Activity_Name", aName);
-            activity.put("Activity_Date", selectedDate);
+            activity.put("Activity_Date", aDate);
             activity.put("Activity_Hours", selectedHours);
             activity.put("Activity_Mins", selectedMins);
             activity.put("Activity_Type", selectedType);
