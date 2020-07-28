@@ -78,7 +78,9 @@ public class MyActivities extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull MyActivities.ActivityViewHolder activityViewHolder, final int i, @NonNull final Activity activity) {
                 activityViewHolder.mActivityName.setText(activity.getActivity_Name());
-                activityViewHolder.mActivityDescription.setText(activity.getActivity_Description());
+                activityViewHolder.mActivityType.setText(activity.getActivity_Type());
+                activityViewHolder.mActivityTime.setText(activity.getActivity_Hours() + " hours " + activity.getActivity_Mins() + " mins");
+                activityViewHolder.mActivityDate.setText(activity.getActivity_Date());
                 final String docId = activityAdapter.getSnapshots().getSnapshot(i).getId();
 
 
@@ -190,12 +192,14 @@ public class MyActivities extends AppCompatActivity {
     }
 
     public class ActivityViewHolder extends RecyclerView.ViewHolder {
-        TextView mActivityName, mActivityDescription;
+        TextView mActivityName, mActivityType, mActivityTime, mActivityDate;
         View view;
         public ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
+            mActivityDate = itemView.findViewById(R.id.activityDate);
             mActivityName = itemView.findViewById(R.id.activityName);
-            mActivityDescription = itemView.findViewById(R.id.activityDescription);
+            mActivityType = itemView.findViewById(R.id.activityType);
+            mActivityTime = itemView.findViewById(R.id.activityTime);
             view = itemView;
 
         }

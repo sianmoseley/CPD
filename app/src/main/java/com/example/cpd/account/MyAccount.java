@@ -14,7 +14,7 @@ import com.example.cpd.R;
 
 public class MyAccount extends AppCompatActivity {
 
-    Button detailsBtn, notificationBtn, deleteBtn, changePasswordBtn;
+    Button  notificationBtn, deleteBtn, changePasswordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +24,11 @@ public class MyAccount extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        detailsBtn = findViewById(R.id.detailsBtn);
+
         notificationBtn = findViewById(R.id.notificationBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
         changePasswordBtn = findViewById(R.id.changePasswordBtn);
 
-        detailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyAccount.this, EditAccount.class);
-                startActivity(intent);
-            }
-        });
 
         changePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override

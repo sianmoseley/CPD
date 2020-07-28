@@ -3,62 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/colorAccent">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/eventname"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addEventLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="20dp"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:hint="Type Event"
-        android:inputType="textShortMessage"
-        tools:ignore="HardcodedText"
-        android:autofillHints=""
-        tools:targetApi="o" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="Add Event">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-        <ImageButton
+        <Button
             android:id="@+id/seteventtime"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/ic_baseline_timer_24"
-            android:contentDescription="TODO"
-            tools:ignore="ContentDescription,HardcodedText"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Time"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginStart="50dp"
+            android:layout_gravity="center"
             />
 
         <TextView
             android:id="@+id/eventtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
             android:text="00:00 AM"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            android:layout_weight="2"
-            />
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Alarm Me"
-            android:textColor="@android:color/white"
-            android:buttonTint="@android:color/white"
-            android:id="@+id/alarmme"
-            android:layout_weight="1"/>
-
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/alarmme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="center"
+        android:text="Add Reminder" />
+
 
     <Button
         android:id="@+id/addevent"
@@ -66,11 +69,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:background="@android:color/white"
-        android:text="Add Event"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText" />
+        android:text="Add Event" />
 
 </LinearLayout>

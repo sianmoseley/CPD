@@ -142,15 +142,11 @@ public class Standards extends AppCompatActivity {
         });
 
 
-
-
-
-
-        standardOne.setText("1. Maintain a continuous, up-to-date and accurate record of their CPD activities.");
-        standardTwo.setText("2. Demonstrate that their current CPD activities are a mixture of learning activities relevant to current or future practice.");
-        standardThree.setText("3. Seek to ensure that their CPD has contributed to the quality of their practice and service delivery.");
-        standardFour.setText("4. Seek to ensure that their CPD benefits the service user.");
-        standardFive.setText("5. Upon request, present a written profile (which must be their own work and supported by evidence) explaining how they met the Standards for CPD.");
+        standardOne.setText("Maintain a continuous, up-to-date and accurate record of their CPD activities.");
+        standardTwo.setText("Demonstrate that their current CPD activities are a mixture of learning activities relevant to current or future practice.");
+        standardThree.setText("Seek to ensure that their CPD has contributed to the quality of their practice and service delivery.");
+        standardFour.setText("Seek to ensure that their CPD benefits the service user.");
+        standardFive.setText("Upon request, present a written profile (which must be their own work and supported by evidence) explaining how they met the Standards for CPD.");
 
     }
 

@@ -28,6 +28,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,7 +44,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.xml.datatype.Duration;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     PieChart pieChart;
     ArrayList<PieEntry> hours;
     TextView welcomeText;
+    float formalEducationCompletedHours, otherCompletedHours, professionalActivitiesHours, selfDirectedLearningHours, workBasedLearningHours;
 
+    int totalHoursCount;
 
 
     @Override
@@ -114,7 +123,90 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         //TODO: NEED NEW QUERY/WAY TO ADD UP TOTAL HOURS/MINS TO DISPLAY HERE
         welcomeText = findViewById(R.id.welcomeText);
-        welcomeText.setText("Welcome to CPD Journal. You have completed X hours.");
+
+        countTotalCPDTime();
+
+    }
+
+    private void countTotalCPDTime() {
+
+        final CollectionReference totalHours = fStore.collection("cpdActivities").document(user.getUid()).collection("myCPD");
+
+        totalHours.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    totalHoursCount = 0;
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String hoursTotalString = document.getString("Activity_Hours");
+                        int hoursTotal = Integer.parseInt(hoursTotalString);
+                        totalHoursCount += hoursTotal;
+                    }
+                    Log.d("TAG", "Total hours of CPD activity is: " + totalHoursCount);
+
+                }
+            }
+        });
+
+        CollectionReference totalMins = fStore.collection("cpdActivities").document(user.getUid()).collection("myCPD");
+
+        totalMins.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    int totalMins = 0;
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String totalMinsString = document.getString("Activity_Mins");
+                        int minsTotal = Integer.parseInt(totalMinsString);
+                        totalMins += minsTotal;
+                    }
+                    Log.d("TAG", "Total mins of CPD activity is: " + totalMins);
+
+                    int hoursToMins = totalHoursCount * 60;
+                    int totalTimeInMins = totalMins + hoursToMins;
+                    Log.d("TAG", "TIME CALCUATED TO ALL MINUTES:" + totalTimeInMins);
+
+
+                    String totalTimeString = String.valueOf(totalTimeInMins);
+
+
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("mm");
+                    try {
+                        Date dt = sdf.parse(totalTimeString);
+                        sdf = new SimpleDateFormat("HH:mm");
+                        Log.d("TAG", sdf.format(dt));
+                        welcomeText.setText("You have recorded " + sdf.format(dt) + " minutes of CPD activities.");
+                    } catch (ParseException e){
+                        e.printStackTrace();
+                    }
+
+
+
+//                    if (totalMins > 60) {
+//                        newMins = totalMins - 60;
+//                        newHoursCount = totalHoursCount + 1;
+//                        if (newMins >= 60){
+//                            updatedMins = newMins - 60;
+//                            Log.d("TAG", "new mins is: " + updatedMins);
+//                            updatedHours = newHoursCount + 1;
+//                            Log.d("TAG", "new hours is: " + updatedHours);
+//                        }
+//                        );
+//                    }
+
+
+//                    if (totalMins == 60) {
+//                        newMins = totalMins - 60;
+//                        Log.d("TAG", "new mins is: " + newMins);
+//                        newHoursCount = totalHoursCount + 1;
+//                        Log.d("TAG", "new hours is: " + newHoursCount);
+//                    }
+//                    welcomeText.setText("You have recorded " + newHoursCount + " hours and " + newMins + " minutes of CPD.");
+                }
+            }
+        });
 
     }
 
@@ -122,6 +214,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private void createPieChart() {
 
         pieChart = findViewById(R.id.pieChart);
+        pieChart.invalidate();
+
 
         //STATIC PIE DATA
         hours = new ArrayList<>();
@@ -136,35 +230,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
-                    float totalHours = calcHours(task.getResult());
-                    float totalMins = (float) calcMins(task.getResult());
-                    if (totalHours < 0){
-                        hours.add(
-                                new PieEntry(totalMins, "Formal Education Completed")
-                        );
-                        Log.d("TAG", "Formal Education Complete: " + totalMins);
-                        pieChart.notifyDataSetChanged();
-                    }
-
-                    if (totalMins > 0.6){
-                        float newHours = (float) totalHours + 1f;
-                        float newMins = (float) (totalMins - 0.6);
-                        float totalTime = newHours + newMins;
-                        Log.d("TAG", "total time: " + totalTime);
-                        if(totalTime != 0.0){
-                            hours.add(
-                                    new PieEntry(totalTime, "Formal Education Completed")
-                            );
-                            Log.d("TAG", "Formal Education Complete: " + totalTime);
-                            pieChart.notifyDataSetChanged();
-                        }
-                    }
-
-                    if(totalMins == 0){
-                        hours.add(new PieEntry(totalHours,"Formal Education Completed"));
-                        Log.d("TAG", "Formal Education Complete: " + totalHours);
-                        pieChart.notifyDataSetChanged();
-                    }
+                    formalEducationCompletedHours = calcHours(task.getResult());
+                  if(calcHours(task.getResult()) != 0.0){
+                      hours.add(
+                              new PieEntry(formalEducationCompletedHours, "Formal Education Completed")
+                      );
+                      Log.d("TAG", "Formal Education Completed: " + formalEducationCompletedHours);
+                      pieChart.notifyDataSetChanged();
+                  }
                 }
             }
         });
@@ -179,11 +252,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    otherCompletedHours = calcHours(task.getResult());
                     if(calcHours(task.getResult()) != 0.0){
                         hours.add(
-                                new PieEntry(calcHours(task.getResult()), "Other Completed")
+                                new PieEntry(otherCompletedHours, "Other Completed")
                         );
-                        Log.d("TAG", "Other Completed: " + calcHours(task.getResult()));
+                        Log.d("TAG", "Other Completed: " + otherCompletedHours);
                         pieChart.notifyDataSetChanged();
                     }
                 }
@@ -200,11 +274,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    professionalActivitiesHours = calcHours(task.getResult());
                     if(calcHours(task.getResult()) != 0.0){
                         hours.add(
-                                new PieEntry(calcHours(task.getResult()), "Professional Activities")
+                                new PieEntry(professionalActivitiesHours, "Professional Activities")
                         );
-                        Log.d("TAG", "Professional Activities: " + calcHours(task.getResult()));
+                        Log.d("TAG", "Professional Activities: " + professionalActivitiesHours);
                         pieChart.notifyDataSetChanged();
                     }
                 }
@@ -220,11 +295,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    selfDirectedLearningHours = calcHours(task.getResult());
                     if(calcHours(task.getResult()) != 0.0){
                         hours.add(
-                                new PieEntry(calcHours(task.getResult()), "Self-Directed Learning")
+                                new PieEntry(selfDirectedLearningHours, "Self-Directed Learning")
                         );
-                        Log.d("TAG", "Self-Directed Learning: " + calcHours(task.getResult()));
+                        Log.d("TAG", "Self-Directed Learning: " + selfDirectedLearningHours);
                         pieChart.notifyDataSetChanged();
                     }
                 }
@@ -240,11 +316,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    workBasedLearningHours = calcHours(task.getResult());
                     if(calcHours(task.getResult()) != 0.0){
                         hours.add(
-                                new PieEntry(calcHours(task.getResult()), "Work-Based Learning")
+                                new PieEntry(workBasedLearningHours, "Work-Based Learning")
                         );
-                        Log.d("TAG", "Worked-Based Learning: " + calcHours(task.getResult()));
+                        Log.d("TAG", "Worked-Based Learning: " + workBasedLearningHours);
                         pieChart.notifyDataSetChanged();
                     }
                 }
@@ -252,29 +329,39 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         });
 
 
-
-
         //TODO: FIX PIE CHART LAYOUT STUFF
         PieDataSet pieDataSet = new PieDataSet(hours, "");
         pieDataSet.setColors(new int[] {R.color.pie_blue, R.color.pie_green, R.color.pie_yellow, R.color.pie_red, R.color.pie_purple}, this);
-        pieDataSet.setValueTextColor(Color.BLACK);
+        pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setValueTextSize(16f);
         PieData pieData = new PieData(pieDataSet);
 
 
-
-
         pieChart.setData(pieData);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("My CPD Health Check");
+        pieChart.setEntryLabelColor(Color.parseColor("#2F334F"));
+        pieChart.setCenterText("My CPD");
+        pieChart.setCenterTextSize(16f);
+
+        pieChart.setCenterTextColor(Color.parseColor("#2F334F"));
         pieChart.animate();
-        pieData.setValueFormatter(new MyDecimalValueFormatter());
+
+        //MAKES PIE CHART SHOW TOTAL COUNT WITH DECIMAL
+        //pieData.setValueFormatter(new MyDecimalValueFormatter());
+
+        //MAKES PIE CHART SHOW PERCENTAGES
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setUsePercentValues(true);
 
         Legend legend = pieChart.getLegend();
-        legend.setTextSize(12);
+        legend.setTextSize(16);
+
+        legend.setTextColor(Color.parseColor("#2F334F"));
         legend.setDrawInside(true);
         legend.setWordWrapEnabled(true);
         //legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+
+
 
     }
 

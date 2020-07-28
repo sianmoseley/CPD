@@ -21,68 +21,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Please select all the examples of CPD evidence that you would like to include in your CPD profile. "
+        android:text="Please select all the examples of CPD evidence that you would like to include in your CPD profile. Those already ticked are already in your profile. Unticking these will remove them. "
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <TextView
-        android:id="@+id/professionEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@id/activityHelper" />
-
-    <TextView
-        android:id="@+id/cpdNumberEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@id/activityHelper" />
-
-    <TextView
-        android:id="@+id/summaryEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@id/activityHelper" />
-
-    <TextView
-        android:id="@+id/personalStatementEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@id/activityHelper" />
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/auditList"
+        android:id="@+id/editAuditList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewAuditProgress"
+        app:layout_constraintBottom_toBottomOf="@+id/saveAuditEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/professionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/activityHelper"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/viewAuditProgress"
+        android:id="@+id/saveAuditEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="20dp"
-        android:text="Next"
+        android:text="Save Changes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auditList" />
+        app:layout_constraintTop_toBottomOf="@+id/editAuditList" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

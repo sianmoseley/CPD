@@ -15,9 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".audit.EditSavedAuditActivities"
+            android:label="Edit CPD Profile Activities"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".audit.EditSavedAudit"
+            android:label="Edit CPD Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".audit.SavedAudit"
+            android:label="My Saved CPD Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".audit.cpdProfile"
             android:label="My CPD Profile"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".audit.ViewAudit"
             android:label="My CPD Audit Profile"
@@ -77,12 +89,10 @@
         </activity>
         <activity
             android:name=".auth.Register"
-            android:label="Create Account"
-            />
+            android:label="Create Account" />
         <activity
             android:name=".auth.Login"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />

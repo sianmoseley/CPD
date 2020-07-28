@@ -38,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <Button
                     android:id="@+id/cpdDate"
@@ -64,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Hours">
 
                 <AutoCompleteTextView
@@ -80,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Minutes">
 
                 <AutoCompleteTextView
@@ -96,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Activity Type">
 
                 <AutoCompleteTextView
@@ -113,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Activity Description">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -130,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="What did you do?">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -147,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="What did you learn?">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -164,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="What would you do now differently?">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -181,6 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Who has benefited?">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -216,7 +225,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="Gallery"
+                android:text="Open Gallery"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.819"

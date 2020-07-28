@@ -376,7 +376,7 @@ public class AddActivity extends AppCompatActivity {
 
 
                             if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
-                                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
+                                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType == null || selectedHours == null|| selectedMins == null) {
                                 Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -399,6 +399,7 @@ public class AddActivity extends AppCompatActivity {
                             activity.put("Activity_Ref3", aRef3);
                             activity.put("Activity_Ref4", aRef4);
                             activity.put("Image_URL", downloadURL);
+                            activity.put("In_Audit", false);
 
                             documentReference.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -432,7 +433,7 @@ public class AddActivity extends AppCompatActivity {
             String aDate = rDate.getText().toString();
 
             if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
-                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType.isEmpty() || selectedHours.isEmpty() || selectedMins.isEmpty()) {
+                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty()) {
                 Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -454,6 +455,7 @@ public class AddActivity extends AppCompatActivity {
             activity.put("Activity_Ref3", aRef3);
             activity.put("Activity_Ref4", aRef4);
             activity.put("Image_URL", "No Image Selected");
+            activity.put("In_Audit", false);
 
             documentReference.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override

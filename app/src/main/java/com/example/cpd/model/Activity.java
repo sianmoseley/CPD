@@ -13,6 +13,9 @@ public class Activity {
     private String Activity_Ref4;
     private String Activity_Type;
     private String Image_URL;
+    private boolean In_Audit;
+
+
 
     //EMPTY CONSTRUCTOR
     public Activity(){
@@ -20,7 +23,7 @@ public class Activity {
     }
 
     //CONSTRUCTOR WITH ALL STRING ATTRIBUTES
-    public Activity(String name, String date, String hours, String minutes, String description, String ref1, String ref2, String ref3, String ref4, String type, String image_URL){
+    public Activity(String name, String date, String hours, String minutes, String description, String ref1, String ref2, String ref3, String ref4, String type, String image_URL, String in_audit){
         this.Activity_Name = Activity_Name;
         this.Activity_Date = Activity_Date;
         this.Activity_Hours = Activity_Hours;
@@ -32,6 +35,7 @@ public class Activity {
         this.Activity_Ref4 = Activity_Ref4;
         this.Activity_Type = Activity_Type;
         this.Image_URL = Image_URL;
+        this.In_Audit = In_Audit;
     }
 
     public String getActivity_Name() {
@@ -120,5 +124,13 @@ public class Activity {
 
     public void setImage_URL(String image_URL) {
         Image_URL = image_URL;
+    }
+
+    public boolean isIn_Audit() {
+        return In_Audit;
+    }
+
+    public void setIn_Audit(boolean in_Audit) {
+        In_Audit = in_Audit;
     }
 }

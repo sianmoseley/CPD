@@ -15,7 +15,7 @@ import com.example.cpd.audit.AuditBuilder;
 
 public class AuditHome extends AppCompatActivity {
 
-    Button startProfileBtn;
+    Button startProfileBtn, viewProfileBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,14 @@ public class AuditHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), cpdProfile.class));
+            }
+        });
+
+        viewProfileBtn = findViewById(R.id.viewProfileBtn);
+        viewProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), SavedAudit.class));
             }
         });
 

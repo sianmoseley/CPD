@@ -24,33 +24,56 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/howToTitle"
+        android:id="@+id/auditInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="How to complete your Continuing Professional Development Audit Profile."
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="If you have been randomly selected to complete a CPD audit, you will need to complete the following steps:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-    <!--TODO: SEE HCCP HOW TO COMPLETE CPD PROFILE PDF FOR TEXT NEEDED HERE -->
     <TextView
+        android:id="@+id/auditSteps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="If you have been randomly selected to complete a CPD audit, you will need to complete the following steps."
-        app:layout_constraintTop_toBottomOf="@+id/howToTitle" />
+        android:textSize="16sp"
+        android:text="Renew your registration and pay the registration fee \n\nComplete a CPD profile by the deadline \n\nProvide supporting evidence that shows how the activities you have carried out meet HCPC standards and the dates they were undertaken. This should also explain any gaps in your CPD of three or more consecutive months."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/auditInfo" />
 
     <Button
-        android:id="@+id/startProfileBtn"
-        android:layout_width="wrap_content"
+    android:id="@+id/startProfileBtn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:text="Start Building Profile"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/auditSteps"
+    app:layout_constraintVertical_bias="0.055" />
+
+    <Button
+        android:id="@+id/viewProfileBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Building Profile"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="View Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="0.201" />
-
+        app:layout_constraintTop_toBottomOf="@+id/startProfileBtn"
+        app:layout_constraintVertical_bias="0.071" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

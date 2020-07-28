@@ -21,17 +21,25 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cpd.MainActivity;
 import com.example.cpd.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -51,20 +59,29 @@ import java.util.Map;
 public class EditActivity extends AppCompatActivity {
 
     Intent data;
-    EditText editActivityName, editActivityDescription, editActivityType, editActivityDate, editActivityHours,
-    editActivityMins, editActivityRef1, editActivityRef2, editActivityRef3, editActivityRef4;
+
+    TextInputEditText editActivityName, editActivityDescription, editActivityRef1, editActivityRef2, editActivityRef3, editActivityRef4;
+
+    TextInputLayout editActivityHoursLayout, editActivityMinsLayout, editActivityTypeLayout;
+    AutoCompleteTextView editActivityHours, editActivityMins, editActivityType;
+
+    TextView editActivityDate;
+
     ImageView editImgPrev;
     FirebaseFirestore fStore;
     ProgressBar spinner;
     FirebaseUser user;
-    Button editPicBtn, editGalleryBtn;
-    String currentPhotoPath;
+    Button editPicBtn, editGalleryBtn, editActivityDateBtn;
+    String currentPhotoPath, editedType, editedHours, editedMins;
     StorageReference storageReference;
 
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     private static final int CHOOSE_IMAGE = 1;
     private Uri imgUrl;
+
+    String activityTypeString, activityHoursString, activityMinsString;
+
 
 
     @Override
@@ -83,34 +100,130 @@ public class EditActivity extends AppCompatActivity {
 
         editActivityName = findViewById(R.id.editActivityName);
         editActivityDescription = findViewById(R.id.editActivityDescription);
-        editActivityType = findViewById(R.id.editActivityType);
-        editActivityDate = findViewById(R.id.editActivityDate);
-        editActivityHours = findViewById(R.id.editActivityHours);
-        editActivityMins = findViewById(R.id.editActivityMins);
         editActivityRef1 = findViewById(R.id.editActivityRef1);
         editActivityRef2 = findViewById(R.id.editActivityRef2);
         editActivityRef3 = findViewById(R.id.editActivityRef3);
         editActivityRef4 = findViewById(R.id.editActivityRef4);
         editImgPrev = findViewById(R.id.editImgPreview);
-
         editPicBtn = findViewById(R.id.editPicBtn);
         editGalleryBtn = findViewById(R.id.editGalleryBtn);
-
         spinner = findViewById(R.id.progressBar2);
+
 
         //DISPLAYS ALL CURRENT ACTIVITY INFORMATION ON SCREEN
         String activityName = data.getStringExtra("Activity_Name");
         String activityDescription = data.getStringExtra("Activity_Description");
         String activityDate = data.getStringExtra("Activity_Date");
-        String activityHours = data.getStringExtra("Activity_Hours");
-        String activityType = data.getStringExtra("Activity_Type");
-        String activityMins = data.getStringExtra("Activity_Mins");
         String activityRef1 = data.getStringExtra("Activity_Ref1");
         String activityRef2 = data.getStringExtra("Activity_Ref2");
         String activityRef3 = data.getStringExtra("Activity_Ref3");
         String activityRef4 = data.getStringExtra("Activity_Ref4");
         String imgUrl = data.getStringExtra("Image_URL");
         Picasso.get().load(imgUrl).into(editImgPrev);
+
+        //DATE PICKER
+        editActivityDateBtn = findViewById(R.id.editActivityDateBtn);
+        editActivityDate = findViewById(R.id.editActivityDate);
+
+        //MATERIAL DATE BUILDER
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Select a date");
+        final MaterialDatePicker materialDatePicker = builder.build();
+
+
+        editActivityDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                editActivityDate.setText(materialDatePicker.getHeaderText());
+            }
+        });
+
+        //CPD EDITED HOURS DROPDOWN MENU
+        editActivityHoursLayout = findViewById(R.id.editActivityHoursLayout);
+        editActivityHours = findViewById(R.id.editActivityHours);
+
+        String[] hours = new String[]{
+                "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+        };
+
+        final ArrayAdapter<String> editAdapterHours = new ArrayAdapter<>(
+                EditActivity.this,
+                R.layout.dropdown_item,
+                hours
+        );
+
+        editActivityHours.setAdapter(editAdapterHours);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)editActivityHoursLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editAdapterHours.getItem(position);
+                editedHours = ((AutoCompleteTextView)editActivityHoursLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected hours is: " + editedHours);
+            }
+        });
+
+        //CPD EDITED MINS DROPDOWN MENU
+        editActivityMinsLayout = findViewById(R.id.editActivityMinsLayout);
+        editActivityMins = findViewById(R.id.editActivityMins);
+
+        String[] mins = new String[]{
+                "0", "15", "30", "45"
+        };
+
+        final ArrayAdapter<String> editAdapterMins = new ArrayAdapter<>(
+                EditActivity.this,
+                R.layout.dropdown_item,
+                mins
+        );
+
+        editActivityMins.setAdapter(editAdapterMins);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)editActivityMinsLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editAdapterMins.getItem(position);
+                editedMins = ((AutoCompleteTextView)editActivityMinsLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected mins is: " + editedMins);
+            }
+        });
+
+
+        //CPD TYPE DROPDOWN MENU
+        editActivityTypeLayout = findViewById(R.id.editActivityTypeLayout);
+        editActivityType = findViewById(R.id.editActivityType);
+
+        final String[] type = new String[]{
+                "Formal Education Completed", "Other Completed", "Professional Activities", "Self-Directed Learning", "Work-Based Learning"
+        };
+
+        final ArrayAdapter<String> editAdapterType = new ArrayAdapter<>(
+                EditActivity.this,
+                R.layout.dropdown_item,
+                type
+        );
+
+        editActivityType.setAdapter(editAdapterType);
+
+        //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
+        ((AutoCompleteTextView)editActivityTypeLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editAdapterType.getItem(position);
+                editedType = ((AutoCompleteTextView)editActivityTypeLayout.getEditText()).getText().toString();
+                Log.d("TAG", "selected type is: " + editedType);
+            }
+        });
+
 
         editPicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,11 +241,26 @@ public class EditActivity extends AppCompatActivity {
 
         //SETS NEW INFORMATION TO WHAT IS ENTERED BY USER
         editActivityName.setText(activityName);
-        editActivityDescription.setText(activityDescription);
-        editActivityType.setText(activityType);
         editActivityDate.setText(activityDate);
-        editActivityHours.setText(activityHours);
-        editActivityMins.setText(activityMins);
+
+        AutoCompleteTextView activityType = (AutoCompleteTextView)editActivityTypeLayout.getEditText();
+        AutoCompleteTextView activityHours = (AutoCompleteTextView)editActivityHoursLayout.getEditText();
+        AutoCompleteTextView activityMins = (AutoCompleteTextView)editActivityMinsLayout.getEditText();
+
+        activityTypeString = data.getStringExtra("Activity_Type");
+        activityHoursString = data.getStringExtra("Activity_Hours");
+        activityMinsString = data.getStringExtra("Activity_Mins");
+
+        activityType.setAdapter(editAdapterType);
+        activityType.setText(activityTypeString, false);
+
+        activityHours.setAdapter(editAdapterHours);
+        activityHours.setText(activityHoursString, false);
+
+        activityMins.setAdapter(editAdapterMins);
+        activityMins.setText(activityMinsString, false);
+
+        editActivityDescription.setText(activityDescription);
         editActivityRef1.setText(activityRef1);
         editActivityRef2.setText(activityRef2);
         editActivityRef3.setText(activityRef3);
@@ -246,85 +374,173 @@ public class EditActivity extends AppCompatActivity {
         return image;
     }
 
+
     private void saveChangesToFirebase() {
-        //CREATE FILE NAME FOR IMAGE TO SAVE TO FIRE STORE
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = timeStamp + ".JPEG";
 
-        final StorageReference image = storageReference.child(user.getUid() + "/cpdDocuments/" + imageFileName);
+        if (imgUrl != null){
+            //CREATE FILE NAME FOR IMAGE TO SAVE TO FIRE STORE
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = timeStamp + ".JPEG";
 
-        UploadTask uploadTask = image.putFile(imgUrl);
+            final StorageReference image = storageReference.child(user.getUid() + "/cpdDocuments/" + imageFileName);
 
-        spinner.setVisibility(View.VISIBLE);
+            UploadTask uploadTask = image.putFile(imgUrl);
 
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String downloadURL = uri.toString();
-                        Log.d("TAG", "Download url is: " + downloadURL);
+            spinner.setVisibility(View.VISIBLE);
 
-                        String eName = editActivityName.getText().toString();
-                        String eDesc = editActivityDescription.getText().toString();
-                        String eRef1 = editActivityRef1.getText().toString();
-                        String eRef2 = editActivityRef2.getText().toString();
-                        String eRef3 = editActivityRef3.getText().toString();
-                        String eRef4 = editActivityRef4.getText().toString();
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String downloadURL = uri.toString();
+                            Log.d("TAG", "Download url is: " + downloadURL);
 
-                        //TODO: NEED TO BE CHANGED INTO SPINNERS/PICKER BUT EDIT TEXTS FOR NOW
+                            String editedActivityName = editActivityName.getText().toString();
+                            String editedActivityDate = editActivityDate.getText().toString();
+                            String editedActivityDescription = editActivityDescription.getText().toString();
+                            String editedRef1 = editActivityRef1.getText().toString();
+                            String editedRef2 = editActivityRef2.getText().toString();
+                            String editedRef3 = editActivityRef3.getText().toString();
+                            String editedRef4 = editActivityRef4.getText().toString();
 
-                        String eType = editActivityType.getText().toString();
-                        String eHours = editActivityHours.getText().toString();
-                        String eMins = editActivityMins.getText().toString();
-                        String eDate = editActivityDate.getText().toString();
+                            if (editedActivityName.isEmpty() || editedActivityDescription.isEmpty() || editedRef1.isEmpty() || editedRef2.isEmpty() || editedRef3.isEmpty() || editedRef4.isEmpty()){
+                                Toast.makeText(EditActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
-                        if (eName.isEmpty() || eDesc.isEmpty() || eRef1.isEmpty() || eRef2.isEmpty()
-                                || eRef3.isEmpty() || eRef4.isEmpty() || eType.isEmpty() || eHours.isEmpty()
-                                || eMins.isEmpty() || eDate.isEmpty()) {
-                            Toast.makeText(EditActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
-                            return;
+                            if (editedHours == null) {
+                                editedHours = activityHoursString;
+                            }
+
+                            if (editedMins == null) {
+                                editedMins = activityMinsString;
+                            }
+
+                            if (editedType == null) {
+                                editedType = activityTypeString;
+                            }
+
+
+
+                            //SAVED EDITED NOTE
+                            DocumentReference documentReference = fStore.collection("cpdActivities")
+                                    .document(user.getUid())
+                                    .collection("myCPD")
+                                    .document(data.getStringExtra("Activity_ID"));
+
+                            Map<String, Object> editActivity = new HashMap<>();
+                            editActivity.put("Activity_Name", editedActivityName);
+                            editActivity.put("Activity_Date", editedActivityDate);
+                            editActivity.put("Activity_Hours", editedHours);
+                            editActivity.put("Activity_Mins", editedMins);
+                            editActivity.put("Activity_Type", editedType);
+                            editActivity.put("Activity_Description", editedActivityDescription);
+                            editActivity.put("Activity_Ref1", editedRef1);
+                            editActivity.put("Activity_Ref2", editedRef2);
+                            editActivity.put("Activity_Ref3", editedRef3);
+                            editActivity.put("Activity_Ref4", editedRef4);
+                            editActivity.put("Image_URL", downloadURL);
+
+                            documentReference.update(editActivity).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(EditActivity.this, "Activity Edited", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(EditActivity.this, "Error, try again", Toast.LENGTH_SHORT).show();
+                                    spinner.setVisibility(View.INVISIBLE);
+                                }
+
+
+                            });
                         }
+                    });
+                }
 
 
-                        //SAVE EDITED NOTE
-                        //TODO: ALSO NEED TO CHECK IF NOTE IS IN AUDIT TABLE AND IF SO, UPDATE RECORD THERE
-                        DocumentReference documentReference = fStore.collection("cpdActivities")
-                                .document(user.getUid())
-                                .collection("myCPD")
-                                .document(data.getStringExtra("Activity_ID"));
 
-                        Map<String, Object> activity = new HashMap<>();
-                        activity.put("Activity_Name", eName);
-                        activity.put("Activity_Date", eDate);
-                        activity.put("Activity_Hours", eHours);
-                        activity.put("Activity_Mins", eMins);
-                        activity.put("Activity_Type", eType);
-                        activity.put("Activity_Description", eDesc);
-                        activity.put("Activity_Ref1", eRef1);
-                        activity.put("Activity_Ref2", eRef2);
-                        activity.put("Activity_Ref3", eRef3);
-                        activity.put("Activity_Ref4", eRef4);
-                        activity.put("Image_URL", downloadURL);
 
-                        documentReference.update(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditActivity.this, "Activity Edited", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(EditActivity.this, "Error, try again", Toast.LENGTH_SHORT).show();
-                                spinner.setVisibility(View.INVISIBLE);
-                            }
-                        });
-                    }
-                });
+
+
+
+
+            });
+        } else {
+
+            String editedActivityName = editActivityName.getText().toString();
+            String editedActivityDate = editActivityDate.getText().toString();
+            String editedActivityDescription = editActivityDescription.getText().toString();
+            String editedRef1 = editActivityRef1.getText().toString();
+            String editedRef2 = editActivityRef2.getText().toString();
+            String editedRef3 = editActivityRef3.getText().toString();
+            String editedRef4 = editActivityRef4.getText().toString();
+
+            if (editedActivityName.isEmpty() || editedActivityDescription.isEmpty() || editedRef1.isEmpty() || editedRef2.isEmpty() || editedRef3.isEmpty() || editedRef4.isEmpty()){
+                Toast.makeText(EditActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
+
+           if (editedHours == null) {
+               editedHours = activityHoursString;
+           }
+
+            if (editedMins == null) {
+                editedMins = activityMinsString;
+            }
+
+            if (editedType == null) {
+                editedType = activityTypeString;
+            }
+
+            //SAVED EDITED NOTE
+            DocumentReference documentReference = fStore.collection("cpdActivities")
+                    .document(user.getUid())
+                    .collection("myCPD")
+                    .document(data.getStringExtra("Activity_ID"));
+
+            Map<String, Object> editActivity = new HashMap<>();
+            editActivity.put("Activity_Name", editedActivityName);
+            editActivity.put("Activity_Date", editedActivityDate);
+            editActivity.put("Activity_Hours", editedHours);
+            editActivity.put("Activity_Mins", editedMins);
+            editActivity.put("Activity_Type", editedType);
+            editActivity.put("Activity_Description", editedActivityDescription);
+            editActivity.put("Activity_Ref1", editedRef1);
+            editActivity.put("Activity_Ref2", editedRef2);
+            editActivity.put("Activity_Ref3", editedRef3);
+            editActivity.put("Activity_Ref4", editedRef4);
+            editActivity.put("Image_URL", "No Image Selected");
+
+            documentReference.update(editActivity).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(EditActivity.this, "Activity Edited", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditActivity.this, "Error, try again", Toast.LENGTH_SHORT).show();
+                    spinner.setVisibility(View.INVISIBLE);
+                }
+
+
+            });
+
+            //TODO: UPDATE DOCUMENT IN AUDIT PROFILE IF PRESENT
+
+        }
+
+
+
+
+
+
     }
 
 

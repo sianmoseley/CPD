@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,7 @@ public class AuditBuilder extends AppCompatActivity {
         activityHelper = findViewById(R.id.activityHelper);
         viewAuditProgress = findViewById(R.id.viewAuditProgress);
 
+        //TO PASS INFO FROM ONE ACTIVITY TO ANOTHER
         professionEditText = findViewById(R.id.professionEditText);
         professionEditText.setText(getIntent().getStringExtra("Profession_Text"));
         professionEditText.setVisibility(View.INVISIBLE);
@@ -77,8 +79,6 @@ public class AuditBuilder extends AppCompatActivity {
         personalStatementEditText = findViewById(R.id.personalStatementEditText);
         personalStatementEditText.setText(getIntent().getStringExtra("Personal_Statement"));
         personalStatementEditText.setVisibility(View.INVISIBLE);
-
-
 
 
 
@@ -109,16 +109,21 @@ public class AuditBuilder extends AppCompatActivity {
 
         auditAdapter = new FirestoreRecyclerAdapter<Activity, AuditBuilder.AuditViewHolder>(auditBuilder) {
             @Override
-            protected void onBindViewHolder(@NonNull AuditBuilder.AuditViewHolder auditViewHolder, int i, @NonNull final Activity activity) {
+            protected void onBindViewHolder(@NonNull final AuditBuilder.AuditViewHolder auditViewHolder, int i, @NonNull final Activity activity) {
+
                 auditViewHolder.aAuditActivityName.setText(activity.getActivity_Name());
-                auditViewHolder.aAuditActivityDescription.setText(activity.getActivity_Description());
+                auditViewHolder.aAuditActivityType.setText(activity.getActivity_Type());
+                auditViewHolder.aAuditActivityDate.setText(activity.getActivity_Date());
+
                 final String docId = auditAdapter.getSnapshots().getSnapshot(i).getId();
 
                 auditViewHolder.auditCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked){
+
                             //ADD DOCUMENT ID TO DATABASE
+                            //TODO: CHECKBOXES DON'T STAY CHECKED - NEED TO SAVE STATE IN RECYCLER VIEW SOMEHOW? UPDATING OTHER COLLECTION ALSO FREAKS IT OUT
                             DocumentReference documentReference = fStore.collection("audits")
                                     .document(user.getUid())
                                     .collection("myAuditActivities")
@@ -139,11 +144,12 @@ public class AuditBuilder extends AppCompatActivity {
                             audit.put("Activity_Ref3", activity.getActivity_Ref3());
                             audit.put("Activity_Ref4", activity.getActivity_Ref4());
                             audit.put("Image_URL", activity.getImage_URL());
+                            audit.put("In_Audit", true);
 
                             documentReference.set(audit).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(AuditBuilder.this, "Activity added to Audit", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "Activity successfully added to audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -151,6 +157,28 @@ public class AuditBuilder extends AppCompatActivity {
                                     Toast.makeText(AuditBuilder.this, "Error, try again", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+
+//                            //UPDATE BOOLEAN IN_AUDIT IN CPD ACTIVITIES LOCATION IN DATABASE TO TRUE
+//                            DocumentReference updateActivity = fStore.collection("cpdActivities")
+//                                    .document(user.getUid())
+//                                    .collection("myCPD")
+//                                    .document(docId);
+//
+//                            Map<String, Object> updateBoolean = new HashMap<>();
+//                            updateBoolean.put("In_Audit", true);
+//
+//                            updateActivity.update(updateBoolean).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    Log.d("TAG", "In_Audit successfully updated");
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.d("TAG", "In_Audit update failed");
+//                                }
+//                            });
 
                         } else {
                             //CHECKBOX UNCHECKED, DELETES FROM AUDIT TABLE
@@ -161,7 +189,7 @@ public class AuditBuilder extends AppCompatActivity {
                             docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(AuditBuilder.this, "Activity removed from Audit", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "Activity successfully removed from audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -169,6 +197,29 @@ public class AuditBuilder extends AppCompatActivity {
                                     Toast.makeText(AuditBuilder.this, "Error, try again", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+
+                            //UPDATE BOOLEAN IN_AUDIT IN CPD ACTIVITIES LOCATION IN DATABASE BACK TO FALSE
+//                            DocumentReference updateActivity = fStore.collection("cpdActivities")
+//                                    .document(user.getUid())
+//                                    .collection("myCPD")
+//                                    .document(docId);
+//
+//                            Map<String, Object> updateBoolean = new HashMap<>();
+//                            updateBoolean.put("In_Audit", false);
+//
+//                            updateActivity.update(updateBoolean).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    Log.d("TAG", "In_Audit successfully updated");
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.d("TAG", "In_Audit update failed");
+//                                }
+//                            });
+
 
                         }
                     }
@@ -226,26 +277,22 @@ public class AuditBuilder extends AppCompatActivity {
         }
     }
 
+
+
     public class AuditViewHolder extends RecyclerView.ViewHolder {
-        TextView aAuditActivityName, aAuditActivityDescription;
+        TextView aAuditActivityName, aAuditActivityType, aAuditActivityDate;
         View view;
         CheckBox auditCheckBox;
 
         public AuditViewHolder(@NonNull View itemView) {
             super(itemView);
             aAuditActivityName = itemView.findViewById(R.id.auditActivityName);
-            aAuditActivityDescription = itemView.findViewById(R.id.auditActivityDescription);
+            aAuditActivityType = itemView.findViewById(R.id.auditActivityType);
+            aAuditActivityDate = itemView.findViewById(R.id.auditActivityDate);
             auditCheckBox = itemView.findViewById(R.id.auditCheckBox);
             view = itemView;
         }
     }
-
-
-
-
-
-
-
 
 
 

@@ -117,7 +117,7 @@ public class CustomCalendarView extends LinearLayout {
                 final View addView = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_newevent_layout,null);
                 final EditText EventName = addView.findViewById(R.id.eventname);
                 final TextView EventTime = addView.findViewById(R.id.eventtime);
-                ImageButton SetTime = addView.findViewById(R.id.seteventtime);
+                Button SetTime = addView.findViewById(R.id.seteventtime);
                 final CheckBox alarmMe = addView.findViewById(R.id.alarmme);
                 Calendar dateCalendar = Calendar.getInstance();
                 dateCalendar.setTime(dates.get(position));

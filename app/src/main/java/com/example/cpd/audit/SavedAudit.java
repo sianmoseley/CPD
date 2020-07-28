@@ -25,32 +25,31 @@ import com.example.cpd.activity.ActivityDetails;
 import com.example.cpd.model.Activity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.api.Distribution;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.HashMap;
-import java.util.Map;
+public class SavedAudit extends AppCompatActivity {
 
-public class ViewAudit extends AppCompatActivity {
-
-    RecyclerView auditViewList;
-    FirebaseFirestore fStore;
-    FirestoreRecyclerAdapter<Activity, ViewAudit.ViewAuditViewHolder> viewAuditAdapter;
+    TextView savedProfessionTitle, savedProfessionText, savedCpdTitle, savedCpdNumberText, savedSummaryTitle, savedSummaryText, savedPersonalStatementTitle, savedPersonalStatementText;
+    Button exportProfileBtn, editProfileBtn;
     FirebaseUser user;
     FirebaseAuth fAuth;
-    Button saveProfileBtn;
-    TextView professionText, cpdNumberText, summaryText, personalStatementText;
+    RecyclerView savedAuditViewList;
+    FirestoreRecyclerAdapter<Activity, SavedAudit.SavedAuditViewHolder> savedAuditAdapter;
+    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_audit);
+        setContentView(R.layout.activity_saved_audit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,59 +58,59 @@ public class ViewAudit extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
-        auditViewList = findViewById(R.id.auditViewList);
+        savedAuditViewList = findViewById(R.id.savedAuditViewList);
 
-
-
-        //CODE TO DISPLAY WHAT USER HAD ENTERED IN CPD PROFILE CLASS
-        professionText = findViewById(R.id.professionText);
-        professionText.setText(getIntent().getStringExtra("Profession_Text"));
-
-        cpdNumberText = findViewById(R.id.cpdNumberText);
-        cpdNumberText.setText(getIntent().getStringExtra("CPD_Number"));
-
-        summaryText = findViewById(R.id.summaryText);
-        summaryText.setText(getIntent().getStringExtra("Summary_Text"));
-
-        personalStatementText = findViewById(R.id.personalStatementText);
-        personalStatementText.setText(getIntent().getStringExtra("Personal_Statement"));
-
-        //BUTTON CLICK TO SAVE EDIT TEXT FIELDS TO FIREBASE WITH SELECTED ACTIVITIES FOR AUDIT
-        saveProfileBtn = findViewById(R.id.saveProfileBtn);
-
-        saveProfileBtn.setOnClickListener(new View.OnClickListener() {
+        exportProfileBtn = findViewById(R.id.exportProfileBtn);
+        exportProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference documentReference = fStore.collection("audits")
-                        .document(user.getUid())
-                        .collection("myAuditText")
-                        .document("myAudit");
-
-                String profText = professionText.getText().toString();
-                String cpdNum = cpdNumberText.getText().toString();
-                String sumText = summaryText.getText().toString();
-                String psText = personalStatementText.getText().toString();
-
-                Map<String, Object> auditText = new HashMap<>();
-                auditText.put("Profession", profText);
-                auditText.put("CPD_Number", cpdNum);
-                auditText.put("Summary_Text", sumText);
-                auditText.put("Personal_Statement", psText);
-
-                documentReference.set(auditText).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(ViewAudit.this, "Audit saved", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(ViewAudit.this, AuditHome.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ViewAudit.this, "Error, audit not saved.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(SavedAudit.this, "Export profile coming soon", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        editProfileBtn = findViewById(R.id.editProfileBtn);
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), EditSavedAudit.class));
+                finish();
+            }
+        });
+
+        savedProfessionTitle = findViewById(R.id.savedProfessionTitle);
+        savedCpdTitle = findViewById(R.id.savedCpdTitle);
+        savedSummaryTitle = findViewById(R.id.savedSummaryTitle);
+        savedPersonalStatementTitle = findViewById(R.id.savedPersonalStatementTitle);
+
+
+
+        //DOCUMENT REFERENCE TO DISPLAY SAVED AUDIT TEXT
+        DocumentReference documentReference = fStore.collection("audits")
+                .document(user.getUid())
+                .collection("myAuditText")
+                .document("myAudit");
+
+        savedProfessionText = findViewById(R.id.savedProfessionText);
+        savedCpdNumberText = findViewById(R.id.savedCpdNumberText);
+        savedSummaryText = findViewById(R.id.savedSummaryText);
+        savedPersonalStatementText = findViewById(R.id.savedPersonalStatementText);
+
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()){
+                        savedProfessionText.setText(document.getString("Profession"));
+                        savedCpdNumberText.setText(document.getString("CPD_Number"));
+                        savedSummaryText.setText(document.getString("Summary_Text"));
+                        savedPersonalStatementText.setText(document.getString("Personal_Statement"));
+                    }
+                }
+            }
+        });
+
 
 
         //QUERY DATABASE TO DISPLAY SELECTED CPD ACTIVITIES FOR AUDIT
@@ -120,20 +119,20 @@ public class ViewAudit extends AppCompatActivity {
                 .collection("myAuditActivities")
                 .orderBy("Activity_Date", Query.Direction.ASCENDING);
 
-        FirestoreRecyclerOptions<Activity> viewAuditBuilder = new FirestoreRecyclerOptions.Builder<Activity>()
+        final FirestoreRecyclerOptions<Activity> savedAuditBuilder = new FirestoreRecyclerOptions.Builder<Activity>()
                 .setQuery(query, Activity.class)
                 .build();
 
-        viewAuditAdapter = new FirestoreRecyclerAdapter<Activity, ViewAuditViewHolder>(viewAuditBuilder) {
+        savedAuditAdapter = new FirestoreRecyclerAdapter<Activity, SavedAuditViewHolder>(savedAuditBuilder) {
             @Override
-            protected void onBindViewHolder(@NonNull ViewAuditViewHolder viewAuditViewHolder, final int i, @NonNull final Activity activity) {
-                viewAuditViewHolder.vActivityName.setText(activity.getActivity_Name());
-                viewAuditViewHolder.vActivityType.setText(activity.getActivity_Description());
-                viewAuditViewHolder.vActivityDate.setText(activity.getActivity_Date());
-                viewAuditViewHolder.vActivityTime.setText(activity.getActivity_Hours() + " hours " + activity.getActivity_Mins() + " mins");
-                final String docId = viewAuditAdapter.getSnapshots().getSnapshot(i).getId();
+            protected void onBindViewHolder(@NonNull final SavedAuditViewHolder savedAuditViewHolder, final int i, @NonNull final Activity activity) {
+                savedAuditViewHolder.sActivityName.setText(activity.getActivity_Name());
+                savedAuditViewHolder.sActivityType.setText(activity.getActivity_Description());
+                savedAuditViewHolder.sActivityDate.setText(activity.getActivity_Date());
+                savedAuditViewHolder.sActivityTime.setText(activity.getActivity_Hours() + " hours " + activity.getActivity_Mins() + " mins");
+                final String docID = savedAuditBuilder.getSnapshots().getSnapshot(i).getId();
 
-                viewAuditViewHolder.view.setOnClickListener(new View.OnClickListener() {
+                savedAuditViewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent i = new Intent(v.getContext(), ActivityDetails.class);
@@ -148,16 +147,16 @@ public class ViewAudit extends AppCompatActivity {
                         i.putExtra("Activity_Ref3", activity.getActivity_Ref3());
                         i.putExtra("Activity_Ref4", activity.getActivity_Ref4());
                         i.putExtra("Image_URL", activity.getImage_URL());
-                        i.putExtra("Activity_ID", docId);
+                        i.putExtra("Activity_ID", docID);
                         v.getContext().startActivity(i);
                     }
                 });
 
-                ImageView aMenuIcon = viewAuditViewHolder.view.findViewById(R.id.auditViewMenuIcon);
+                ImageView aMenuIcon = savedAuditViewHolder.view.findViewById(R.id.auditViewMenuIcon);
                 aMenuIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        final String docID = viewAuditAdapter.getSnapshots().getSnapshot(i).getId();
+                        final String docID = savedAuditAdapter.getSnapshots().getSnapshot(i).getId();
                         PopupMenu menu = new PopupMenu(v.getContext(), v);
                         menu.getMenu().add("Remove").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
@@ -178,12 +177,12 @@ public class ViewAudit extends AppCompatActivity {
                                                 //ACTIVITY REMOVED FROM AUDIT LIST
                                                 //REFRESH THE RECYCLER VIEW WITH THE EDITED DATA SO ARRAY LIST IS UPDATED
                                                 notifyDataSetChanged();
-                                                Toast.makeText(ViewAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SavedAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(ViewAudit.this, "Error removing activity, try again", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SavedAudit.this, "Error removing activity, try again", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }
@@ -200,49 +199,37 @@ public class ViewAudit extends AppCompatActivity {
                         menu.show();
                     }
                 });
-
-
             }
 
             @NonNull
             @Override
-            public ViewAuditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public SavedAuditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.auditview_view_layout, parent, false);
-                return new ViewAuditViewHolder(view);
+                return new SavedAudit.SavedAuditViewHolder(view);
             }
         };
 
-        auditViewList.setLayoutManager(new LinearLayoutManager(this));
-        auditViewList.setAdapter(viewAuditAdapter);
+        savedAuditViewList.setLayoutManager(new LinearLayoutManager(this));
+        savedAuditViewList.setAdapter(savedAuditAdapter);
 
-    }
 
-    public class ViewAuditViewHolder extends RecyclerView.ViewHolder {
-        TextView vActivityName, vActivityType, vActivityDate, vActivityTime;
-        View view;
-        public ViewAuditViewHolder(@NonNull View itemView) {
-            super(itemView);
-            vActivityName = itemView.findViewById(R.id.auditViewActivityName);
-            vActivityType = itemView.findViewById(R.id.auditViewActivityType);
-            vActivityTime = itemView.findViewById(R.id.auditActivityTime);
-            vActivityDate = itemView.findViewById(R.id.auditActivityDate);
-            view = itemView;
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        viewAuditAdapter.startListening();
+        savedAuditAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(viewAuditAdapter != null){
-            viewAuditAdapter.stopListening();
+        if(savedAuditAdapter != null){
+            savedAuditAdapter.stopListening();
         }
     }
+
+
 
     //WHEN BACK BUTTON IS CLICKED, SEND THEM BACK TO MAIN ACTIVITY
     @Override
@@ -254,5 +241,17 @@ public class ViewAudit extends AppCompatActivity {
 
     }
 
+    public class SavedAuditViewHolder extends RecyclerView.ViewHolder{
+        TextView sActivityName, sActivityType, sActivityDate, sActivityTime;
+        View view;
+        public SavedAuditViewHolder(@NonNull View itemView) {
+            super(itemView);
+            sActivityName = itemView.findViewById(R.id.auditViewActivityName);
+            sActivityType = itemView.findViewById(R.id.auditViewActivityType);
+            sActivityDate = itemView.findViewById(R.id.auditActivityTime);
+            sActivityTime = itemView.findViewById(R.id.auditActivityDate);
+            view = itemView;
 
+        }
+    }
 }

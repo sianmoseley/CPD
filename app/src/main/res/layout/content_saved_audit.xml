@@ -27,12 +27,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/professionTitle"
+                android:id="@+id/savedProfessionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Profession:"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:text="Profession:"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -42,131 +42,155 @@
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
             <TextView
-                android:id="@+id/professionText"
+                android:id="@+id/savedProfessionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="16sp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/professionTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/savedProfessionTitle" />
 
             <TextView
-                android:id="@+id/cpdTitle"
+                android:id="@+id/savedCpdTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="CPD Number:"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/professionText" />
+                app:layout_constraintTop_toBottomOf="@+id/savedProfessionText" />
 
             <TextView
-                android:id="@+id/cpdNumberText"
+                android:id="@+id/savedCpdNumberText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:textSize="16sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cpdTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/savedCpdTitle" />
 
             <TextView
-                android:id="@+id/summaryTitle"
+                android:id="@+id/savedSummaryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Summary:"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cpdNumberText" />
+                app:layout_constraintTop_toBottomOf="@+id/savedCpdNumberText" />
 
             <TextView
-                android:id="@+id/summaryText"
+                android:id="@+id/savedSummaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:textSize="16sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/summaryTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/savedSummaryTitle" />
 
             <TextView
-                android:id="@+id/personalStatementTitle"
+                android:id="@+id/savedPersonalStatementTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Personal Statement:"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/summaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/savedSummaryText" />
 
             <TextView
-                android:id="@+id/personalStatementText"
+                android:id="@+id/savedPersonalStatementText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="16sp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/personalStatementTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/savedPersonalStatementTitle" />
+
+            <TextView
+                android:id="@+id/selectedActivitiesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selected Activities:"
+                app:layout_constraintTop_toBottomOf="@+id/savedPersonalStatementText"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/auditViewList"
+                android:id="@+id/savedAuditViewList"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                android:layout_marginTop="12dp"
-                app:layout_constraintBottom_toTopOf="@+id/saveProfileBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/personalStatementText" />
+                app:layout_constraintTop_toBottomOf="@+id/selectedActivitiesTitle" />
+
             <Button
-                android:id="@+id/saveProfileBtn"
+                android:id="@+id/editProfileBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Save Profile"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:text="Edit Profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.918" />
+
+            <Button
+                android:id="@+id/exportProfileBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Export Profile"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/auditViewList" />
+                app:layout_constraintTop_toBottomOf="@+id/editProfileBtn"
+                app:layout_constraintVertical_bias="0.0" />
 
         </LinearLayout>
 
-
     </ScrollView>
+
+
+
+
 
 
 
