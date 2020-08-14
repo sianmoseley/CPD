@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         Date dt = sdf.parse(totalTimeString);
                         sdf = new SimpleDateFormat("HH:mm");
                         //Log.d("TAG", sdf.format(dt));
-                        welcomeText.setText("You have recorded " + sdf.format(dt) + " minutes of CPD activities.");
+                        welcomeText.setText("You have recorded " + sdf.format(dt) + " hours and minutes of CPD activities.");
                     } catch (ParseException e){
                         e.printStackTrace();
                     }

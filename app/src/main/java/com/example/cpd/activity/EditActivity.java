@@ -256,12 +256,15 @@ public class EditActivity extends AppCompatActivity {
 
         activityType.setAdapter(editAdapterType);
         activityType.setText(activityTypeString, false);
+        editedType = activityTypeString;
 
         activityHours.setAdapter(editAdapterHours);
         activityHours.setText(activityHoursString, false);
+        editedHours = activityHoursString;
 
         activityMins.setAdapter(editAdapterMins);
         activityMins.setText(activityMinsString, false);
+        editedMins = activityHoursString;
 
         editActivityDescription.setText(activityDescription);
         editActivityRef1.setText(activityRef1);
@@ -421,25 +424,11 @@ public class EditActivity extends AppCompatActivity {
                             String editedRef3 = editActivityRef3.getText().toString();
                             String editedRef4 = editActivityRef4.getText().toString();
 
+                            //CHECKS TO MAKE SURE FIELDS AREN'T LEFT EMPTY
                             if (editedActivityName.isEmpty() || editedActivityDescription.isEmpty() || editedRef1.isEmpty() || editedRef2.isEmpty() || editedRef3.isEmpty() || editedRef4.isEmpty()){
                                 Toast.makeText(EditActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-
-                            if (editedHours == null) {
-                                editedHours = activityHoursString;
-                            }
-
-                            if (editedMins == null) {
-                                editedMins = activityMinsString;
-                            }
-
-                            if (editedType == null) {
-                                editedType = activityTypeString;
-                            }
-
-
-
                             //SAVED EDITED NOTE
                             DocumentReference documentReference = fStore.collection("cpdActivities")
                                     .document(user.getUid())
