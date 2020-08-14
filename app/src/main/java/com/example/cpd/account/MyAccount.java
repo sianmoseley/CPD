@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -67,32 +69,8 @@ public class MyAccount extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(v.getContext());
-                deleteDialog.setTitle("Are you sure you want to delete your account?");
-                deleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //CAN ONLY DELETE USER - CAN'T DELETE COLLECTIONS/SUBCOLLECTIONS FROM FIREBASE WITH ANDROID
-                        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Log.d("TAG", "User account deleted.");
-                                }
-                            }
-                        });
-                        startActivity(new Intent(getApplicationContext(), Splash.class));
-                        finish();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //close the dialog
-                    }
-                });
-                deleteDialog.create().show();
-
-
+                Intent intent = new Intent(MyAccount.this, DeleteAccount.class);
+                startActivity(intent);
             }
         });
 
