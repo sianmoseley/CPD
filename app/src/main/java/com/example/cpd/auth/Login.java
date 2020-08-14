@@ -56,8 +56,9 @@ public class Login extends AppCompatActivity {
 
         forgetPass = findViewById(R.id.forgotPassword);
         createAcc = findViewById(R.id.createAccount);
-        user = FirebaseAuth.getInstance().getCurrentUser();
 
+        //INITIALIZE FIREBASE INSTANCES
+        user = FirebaseAuth.getInstance().getCurrentUser();
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 

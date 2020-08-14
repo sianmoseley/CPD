@@ -56,6 +56,7 @@ public class Register extends AppCompatActivity {
         registerBtn = findViewById(R.id.createAccount);
         progressBar = findViewById(R.id.progressBar4);
 
+        //INITIALISING FIREBASE INSTANCES
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
@@ -83,8 +84,7 @@ public class Register extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                // register the user in firebase
-
+                //REGISTER USER IN FIREBASE
                 fAuth.createUserWithEmailAndPassword(uUserEmail,uUserPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

@@ -72,7 +72,10 @@ public class EditActivity extends AppCompatActivity {
     ProgressBar spinner;
     FirebaseUser user;
     Button editPicBtn, editGalleryBtn, editActivityDateBtn;
-    String currentPhotoPath, editedType, editedHours, editedMins;
+    String currentPhotoPath;
+    String editedType = "";
+    String editedHours = "";
+    String editedMins = "";
     StorageReference storageReference;
 
     public static final int CAMERA_PERMISSION_CODE = 101;
@@ -271,7 +274,20 @@ public class EditActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    saveChangesToFirebase();
+                    if (editedType.trim().length() != 0 && editedHours.trim().length() != 0 && editedMins.trim().length() !=0){
+                        saveChangesToFirebase();
+                    }
+                    else {
+                        if (editedType.trim().length() == 0){
+                            editActivityTypeLayout.setError("Please select Activity Type");
+                        }
+                        if (editedHours.trim().length() == 0){
+                            editActivityHoursLayout.setError("Please select Hours");
+                        }
+                        if (editedMins.trim().length() == 0){
+                            editActivityMinsLayout.setError("Please select Mins");
+                        }
+                    }
                 }
             }
         );
@@ -447,7 +463,8 @@ public class EditActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(EditActivity.this, "Activity Edited", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    onBackPressed();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -520,7 +537,8 @@ public class EditActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(EditActivity.this, "Activity Edited", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    onBackPressed();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -532,7 +550,6 @@ public class EditActivity extends AppCompatActivity {
 
             });
 
-            //TODO: UPDATE DOCUMENT IN AUDIT PROFILE IF PRESENT
 
         }
 

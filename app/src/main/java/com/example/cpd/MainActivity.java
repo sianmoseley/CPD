@@ -3,6 +3,7 @@ package com.example.cpd;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,13 +45,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.xml.datatype.Duration;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
@@ -121,10 +127,29 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
         });
 
-        //TODO: NEED NEW QUERY/WAY TO ADD UP TOTAL HOURS/MINS TO DISPLAY HERE
+
         welcomeText = findViewById(R.id.welcomeText);
 
         countTotalCPDTime();
+
+
+        //NOTIFICATIONS
+        //CODE TO RETRIEVE DEVICE REGISTRATION TOKEN
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log token
+                        Log.d("TAG", token);
+                    }
+                });
+
 
     }
 
@@ -142,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         int hoursTotal = Integer.parseInt(hoursTotalString);
                         totalHoursCount += hoursTotal;
                     }
-                    Log.d("TAG", "Total hours of CPD activity is: " + totalHoursCount);
-
+                    //Log.d("TAG", "Total hours of CPD activity is: " + totalHoursCount);
                 }
             }
         });
@@ -151,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         CollectionReference totalMins = fStore.collection("cpdActivities").document(user.getUid()).collection("myCPD");
 
         totalMins.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -160,54 +185,35 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         int minsTotal = Integer.parseInt(totalMinsString);
                         totalMins += minsTotal;
                     }
-                    Log.d("TAG", "Total mins of CPD activity is: " + totalMins);
+                    //Log.d("TAG", "Total mins of CPD activity is: " + totalMins);
 
                     int hoursToMins = totalHoursCount * 60;
                     int totalTimeInMins = totalMins + hoursToMins;
-                    Log.d("TAG", "TIME CALCUATED TO ALL MINUTES:" + totalTimeInMins);
+
+                    Long longTotalTime = Long.valueOf(totalTimeInMins);
+
+                    Duration d = Duration.ofMinutes(longTotalTime);
+                    String finalTime = LocalTime.MIN.plus(d).toString();
+
+                    Log.d("TAG", "Total time this time Sian!!!: " + finalTime);
 
 
+                    //Log.d("TAG", "TIME CALCUATED TO ALL MINUTES:" + totalTimeInMins);
+
+                    //TODO: CURRENT VERSION OF TIME DISPLAY, TRYING TO GET BETTER STRING FORMAT
                     String totalTimeString = String.valueOf(totalTimeInMins);
-
-
-
-
                     SimpleDateFormat sdf = new SimpleDateFormat("mm");
                     try {
                         Date dt = sdf.parse(totalTimeString);
                         sdf = new SimpleDateFormat("HH:mm");
-                        Log.d("TAG", sdf.format(dt));
+                        //Log.d("TAG", sdf.format(dt));
                         welcomeText.setText("You have recorded " + sdf.format(dt) + " minutes of CPD activities.");
                     } catch (ParseException e){
                         e.printStackTrace();
                     }
-
-
-
-//                    if (totalMins > 60) {
-//                        newMins = totalMins - 60;
-//                        newHoursCount = totalHoursCount + 1;
-//                        if (newMins >= 60){
-//                            updatedMins = newMins - 60;
-//                            Log.d("TAG", "new mins is: " + updatedMins);
-//                            updatedHours = newHoursCount + 1;
-//                            Log.d("TAG", "new hours is: " + updatedHours);
-//                        }
-//                        );
-//                    }
-
-
-//                    if (totalMins == 60) {
-//                        newMins = totalMins - 60;
-//                        Log.d("TAG", "new mins is: " + newMins);
-//                        newHoursCount = totalHoursCount + 1;
-//                        Log.d("TAG", "new hours is: " + newHoursCount);
-//                    }
-//                    welcomeText.setText("You have recorded " + newHoursCount + " hours and " + newMins + " minutes of CPD.");
                 }
             }
         });
-
     }
 
 
@@ -329,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         });
 
 
-        //TODO: FIX PIE CHART LAYOUT STUFF
+
         PieDataSet pieDataSet = new PieDataSet(hours, "");
         pieDataSet.setColors(new int[] {R.color.pie_blue, R.color.pie_green, R.color.pie_yellow, R.color.pie_red, R.color.pie_purple}, this);
         pieDataSet.setValueTextColor(Color.WHITE);
@@ -453,6 +459,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         return false;
     }
+
+
 
 
 }

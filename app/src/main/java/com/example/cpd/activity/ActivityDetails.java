@@ -83,6 +83,7 @@ public class ActivityDetails extends AppCompatActivity {
                 i.putExtra("Activity_ID", data.getStringExtra("Activity_ID"));
                 i.putExtra("Image_URL", data.getStringExtra("Image_URL"));
                 startActivity(i);
+                finish();
 
 
             }

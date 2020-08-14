@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -79,7 +80,10 @@ public class AddActivity extends AppCompatActivity {
     FirebaseUser user;
     ImageView selectedImage;
     StorageReference storageReference;
-    String currentPhotoPath, selectedType, selectedMins, selectedHours;
+    String currentPhotoPath;
+    String selectedType = "";
+    String selectedHours = "";
+    String selectedMins = "";
     ImageView imgPreview;
     FloatingActionButton fab;
 
@@ -214,6 +218,7 @@ public class AddActivity extends AppCompatActivity {
 
         cpdType.setAdapter(adapterType);
 
+
         //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
         ((AutoCompleteTextView)cpdTypeLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -245,7 +250,19 @@ public class AddActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadToFirebase();
+                if (selectedType.trim().length() != 0 && selectedHours.trim().length() != 0 && selectedMins.trim().length() != 0){
+                    uploadToFirebase();
+                } else {
+                    if (selectedType.trim().length() == 0) {
+                        cpdTypeLayout.setError("Please select Activity Type");
+                    }
+                    if (selectedHours.trim().length() == 0) {
+                        cpdHoursLayout.setError("Please select Hours");
+                    }
+                    if (selectedMins.trim().length() == 0){
+                        cpdMinsLayout.setError("Please select Minutes");
+                    }
+                }
             }
         });
     }
@@ -376,7 +393,7 @@ public class AddActivity extends AppCompatActivity {
 
 
                             if (aName.isEmpty() || aDesc.isEmpty() || aRef1.isEmpty() || aRef2.isEmpty()
-                                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() || selectedType == null || selectedHours == null|| selectedMins == null) {
+                                    || aRef3.isEmpty() || aRef4.isEmpty() || aDate.isEmpty() ) {
                                 Toast.makeText(AddActivity.this, "Can not save activity with empty fields", Toast.LENGTH_SHORT).show();
                                 return;
                             }

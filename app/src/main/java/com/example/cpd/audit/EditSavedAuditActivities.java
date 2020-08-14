@@ -119,32 +119,21 @@ public class EditSavedAuditActivities extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked){
 
-                            //ADD DOCUMENT ID IN DATABASE
-                            DocumentReference documentReference = fStore.collection("audits")
+                            //UPDATE DOCUMENT TO SAY ADDED TO AUDIT WHEN CHECKBOX CLICKED
+
+                            DocumentReference documentReference = fStore.collection("cpdActivities")
                                     .document(user.getUid())
-                                    .collection("myAuditActivities")
+                                    .collection("myCPD")
                                     .document(docId);
 
-                            Map<String, Object> editAudit = new HashMap<>();
+                            Map<String, Object> auditUpdateTrue = new HashMap<>();
 
-                            editAudit.put("Activity_ID", docId);
-                            editAudit.put("Activity_Name", activity.getActivity_Name());
-                            editAudit.put("Activity_Description", activity.getActivity_Description());
-                            editAudit.put("Activity_Type", activity.getActivity_Type());
-                            editAudit.put("Activity_Date", activity.getActivity_Date());
-                            editAudit.put("Activity_Hours", activity.getActivity_Hours());
-                            editAudit.put("Activity_Mins", activity.getActivity_Mins());
-                            editAudit.put("Activity_Ref1", activity.getActivity_Ref1());
-                            editAudit.put("Activity_Ref2", activity.getActivity_Ref2());
-                            editAudit.put("Activity_Ref3", activity.getActivity_Ref3());
-                            editAudit.put("Activity_Ref4", activity.getActivity_Ref4());
-                            editAudit.put("Image_URL", activity.getImage_URL());
-                            editAudit.put("In_Audit", true);
+                            auditUpdateTrue.put("In_Audit", true);
 
-                            documentReference.set(editAudit).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            documentReference.update(auditUpdateTrue).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(EditSavedAuditActivities.this, "Activity added to Audit", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "Activity successfully added to audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -153,36 +142,22 @@ public class EditSavedAuditActivities extends AppCompatActivity {
                                 }
                             });
 
-//                            DocumentReference updateAuditBooleanTrue = fStore.collection("cpdActivities")
-//                                    .document(user.getUid())
-//                                    .collection("myCPD")
-//                                    .document(docId);
-//
-//                            Map<String, Object> updateBooleanTrue = new HashMap<>();
-//                            updateBooleanTrue.put("In_Audit", true);
-//
-//                            updateAuditBooleanTrue.update(updateBooleanTrue).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//                                    Log.d("TAG", docId + ": In_Audit changed to true");
-//                                }
-//                            }).addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.d("TAG", "Error updating In_Audit");
-//                                }
-//                            });
 
                         } else {
-                            //CHECKBOX UNCHECKED, DELETES FROM AUDIT TABLE
-                            DocumentReference docRef = fStore.collection("audits")
+                            //CHECKBOX UNCHECKED, UPDATES IN_AUDIT
+                            DocumentReference documentReference = fStore.collection("cpdActivities")
                                     .document(user.getUid())
-                                    .collection("myAuditActivities")
+                                    .collection("myCPD")
                                     .document(docId);
-                            docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                            Map<String, Object> auditUpdateFalse = new HashMap<>();
+
+                            auditUpdateFalse.put("In_Audit", false);
+
+                            documentReference.update(auditUpdateFalse).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(EditSavedAuditActivities.this, "Activity removed from Audit", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "Activity successfully removed from audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -190,26 +165,6 @@ public class EditSavedAuditActivities extends AppCompatActivity {
                                     Toast.makeText(EditSavedAuditActivities.this, "Error, try again", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-//                            DocumentReference updateAuditBoolean = fStore.collection("cpdActivities")
-//                                    .document(user.getUid())
-//                                    .collection("myCPD")
-//                                    .document(docId);
-//
-//                            Map<String, Object> updateBoolean = new HashMap<>();
-//                            updateBoolean.put("In_Audit", false);
-//
-//                            updateAuditBoolean.update(updateBoolean).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//                                    Log.d("TAG", docId + ": In_Audit changed to false");
-//                                }
-//                            }).addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.d("TAG", "Error updating In_Audit");
-//                                }
-//                            });
                         }
                     }
                 });

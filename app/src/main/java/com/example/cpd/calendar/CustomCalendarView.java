@@ -62,6 +62,7 @@ public class CustomCalendarView extends LinearLayout {
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM",Locale.ENGLISH);
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
     SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+    boolean fNotification;
 
     FirebaseUser user;
     FirebaseFirestore fStore;
@@ -132,7 +133,7 @@ public class CustomCalendarView extends LinearLayout {
                         Calendar calendar = Calendar.getInstance();
                         int hours = calendar.get(Calendar.HOUR_OF_DAY);
                         int minuts = calendar.get(Calendar.MINUTE);
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(addView.getContext(), R.style.Theme_AppCompat_Dialog
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(addView.getContext(), R.style.ThemeOverlay_AppCompat_Dialog
                                 , new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -160,6 +161,8 @@ public class CustomCalendarView extends LinearLayout {
                     public void onClick(View v) {
 
                         if (alarmMe.isChecked()){
+                            fNotification = true;
+                            SaveEventToFirebase(EventName.getText().toString(),EventTime.getText().toString(),date,month,year, fNotification);
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"on");
                             SetUpCalendar();
                             Calendar calendar = Calendar.getInstance();
@@ -169,6 +172,8 @@ public class CustomCalendarView extends LinearLayout {
                                     ,EventName.getText().toString(),EventTime.getText().toString()));
                             alertDialog.dismiss();
                         }else{
+                            fNotification = false;
+                            SaveEventToFirebase(EventName.getText().toString(),EventTime.getText().toString(),date,month,year, fNotification);
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"off");
                             SetUpCalendar();
                             alertDialog.dismiss();
@@ -213,6 +218,8 @@ public class CustomCalendarView extends LinearLayout {
 
     }
 
+
+
     private int getRequestCode(String date,String event,String time){
         int code = 0;
         dbOpenHelper = new DBOpenHelper(context);
@@ -228,6 +235,7 @@ public class CustomCalendarView extends LinearLayout {
         return code;
     }
 
+    //TODO: MIGHT BE ABLE TO GET RID OF THIS IF GET FIREBASE NOTIFICATIONS WORKING
     private void setAlarm(Calendar calendar,String event,String time,int RequestCOde){
         Intent intent = new Intent(context.getApplicationContext(),AlarmReceiver.class);
         intent.putExtra("event",event);
@@ -261,8 +269,17 @@ public class CustomCalendarView extends LinearLayout {
     }
 
 
-    private void SaveEvent(String event,String time,String date, String month,String year,String notify){
+    private void SaveEvent(String event,String time,String date, String month,String year, String notify){
 
+        //ADDS DATA TO MYSQL DATABASE
+        dbOpenHelper = new DBOpenHelper(context);
+        SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
+        dbOpenHelper.SaveEvent(event,time,date,month,year,notify,database);
+        dbOpenHelper.close();
+        Toast.makeText(context, "Event Saved", Toast.LENGTH_SHORT).show();
+    }
+
+    private void SaveEventToFirebase(String event,String time,String date, String month,String year, boolean notify) {
         //ADDS DATA TO FIREBASE
         fStore = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -290,13 +307,6 @@ public class CustomCalendarView extends LinearLayout {
                 Log.d("TAG", "Upload failed" + e.getMessage());
             }
         });
-
-        //ADDS DATA TO MYSQL DATABASE
-        dbOpenHelper = new DBOpenHelper(context);
-        SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
-        dbOpenHelper.SaveEvent(event,time,date,month,year,notify,database);
-        dbOpenHelper.close();
-        Toast.makeText(context, "Event Saved", Toast.LENGTH_SHORT).show();
     }
 
 

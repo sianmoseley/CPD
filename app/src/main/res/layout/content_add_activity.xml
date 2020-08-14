@@ -63,10 +63,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Hours">
+                android:hint="Select Hours">
 
                 <AutoCompleteTextView
                     android:id="@+id/cpdHours"
@@ -81,9 +82,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                app:errorEnabled="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Minutes">
+                android:hint="Select Minutes">
 
                 <AutoCompleteTextView
                     android:id="@+id/cpdMins"
@@ -97,10 +99,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Activity Type">
+                android:hint="Select Activity Type">
 
                 <AutoCompleteTextView
                     android:id="@+id/cpdType"

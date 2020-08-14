@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,10 +116,10 @@ public class ViewAudit extends AppCompatActivity {
 
 
         //QUERY DATABASE TO DISPLAY SELECTED CPD ACTIVITIES FOR AUDIT
-        Query query = fStore.collection("audits")
+        Query query = fStore.collection("cpdActivities")
                 .document(user.getUid())
-                .collection("myAuditActivities")
-                .orderBy("Activity_Date", Query.Direction.ASCENDING);
+                .collection("myCPD")
+                .whereEqualTo("In_Audit", true);
 
         FirestoreRecyclerOptions<Activity> viewAuditBuilder = new FirestoreRecyclerOptions.Builder<Activity>()
                 .setQuery(query, Activity.class)
@@ -167,18 +168,22 @@ public class ViewAudit extends AppCompatActivity {
                                 removeFromAudit.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //TODO: NEED TO ADD ADDITIONAL UPDATE TO IN_AUDIT BOOLEAN IN CPD ACTIVITIES COLLECTION WHEN WORKING CORRECTLY
-                                        DocumentReference documentReference = fStore.collection("audits")
+
+                                        DocumentReference documentReference = fStore.collection("cpdActivities")
                                                 .document(user.getUid())
-                                                .collection("myAuditActivities")
+                                                .collection("myCPD")
                                                 .document(docID);
-                                        documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                        Map<String, Object> auditFalse = new HashMap<>();
+
+                                        auditFalse.put("In_Audit", false);
+
+                                        documentReference.update(auditFalse).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                //ACTIVITY REMOVED FROM AUDIT LIST
-                                                //REFRESH THE RECYCLER VIEW WITH THE EDITED DATA SO ARRAY LIST IS UPDATED
+                                                Log.d("TAG", "Activity successfully removed from audit");
                                                 notifyDataSetChanged();
-                                                Toast.makeText(ViewAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(SavedAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
