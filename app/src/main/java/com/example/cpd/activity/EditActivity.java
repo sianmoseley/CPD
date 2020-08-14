@@ -264,7 +264,7 @@ public class EditActivity extends AppCompatActivity {
 
         activityMins.setAdapter(editAdapterMins);
         activityMins.setText(activityMinsString, false);
-        editedMins = activityHoursString;
+        editedMins = activityMinsString;
 
         editActivityDescription.setText(activityDescription);
         editActivityRef1.setText(activityRef1);
