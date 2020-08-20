@@ -192,17 +192,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     int hoursToMins = totalHoursCount * 60;
                     int totalTimeInMins = totalMins + hoursToMins;
 
-                    Long longTotalTime = Long.valueOf(totalTimeInMins);
-
-                    Duration d = Duration.ofMinutes(longTotalTime);
-                    String finalTime = LocalTime.MIN.plus(d).toString();
-
-                    //Log.d("TAG", "Total time this time Sian!!!: " + finalTime);
 
 
-                    //Log.d("TAG", "TIME CALCUATED TO ALL MINUTES:" + totalTimeInMins);
-
-                    //TODO: CURRENT VERSION OF TIME DISPLAY, TRYING TO GET BETTER STRING FORMAT
                     String totalTimeString = String.valueOf(totalTimeInMins);
                     SimpleDateFormat sdf = new SimpleDateFormat("mm");
                     try {
@@ -222,8 +213,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private void createPieChart() {
 
         pieChart = findViewById(R.id.pieChart);
-        pieChart.invalidate();
-
 
         //STATIC PIE DATA
         hours = new ArrayList<>();
@@ -248,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                       );
                       //Log.d("TAG", "Formal Education Completed: " + formalEducationCompletedTime);
                       pieChart.notifyDataSetChanged();
+                      pieChart.invalidate();
                   }
                 }
             }
@@ -271,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         );
                        // Log.d("TAG", "Other Completed: " + otherCompletedTime);
                         pieChart.notifyDataSetChanged();
+                        pieChart.invalidate();
                     }
                 }
             }
@@ -294,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         );
                         //Log.d("TAG", "Professional Activities: " + professionalActivitiesTime);
                         pieChart.notifyDataSetChanged();
+                        pieChart.invalidate();
                     }
                 }
             }
@@ -316,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         );
                         //Log.d("TAG", "Self-Directed Learning: " + selfDirectedLearningTime);
                         pieChart.notifyDataSetChanged();
+                        pieChart.invalidate();
                     }
                 }
             }
@@ -338,10 +331,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         );
                         //Log.d("TAG", "Worked-Based Learning: " + workBasedLearningTime);
                         pieChart.notifyDataSetChanged();
+                        pieChart.invalidate();
                     }
                 }
             }
         });
+
 
 
 
@@ -361,16 +356,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         pieChart.setCenterTextColor(Color.parseColor("#2F334F"));
         pieChart.animate();
 
-        //MAKES PIE CHART SHOW TOTAL COUNT WITH DECIMAL
-        //pieData.setValueFormatter(new MyDecimalValueFormatter());
-
         //MAKES PIE CHART SHOW PERCENTAGES
         pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setUsePercentValues(true);
 
+        //SET PIE CHART LEGEND
         Legend legend = pieChart.getLegend();
         legend.setTextSize(16);
-
         legend.setTextColor(Color.parseColor("#2F334F"));
         legend.setDrawInside(true);
         legend.setWordWrapEnabled(true);
@@ -379,18 +371,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
     }
-
-
-    //CLASS ALLOWS VALUES OF PIE CHART AS DECIMALS
-    public class MyDecimalValueFormatter extends ValueFormatter{
-
-        @Override
-        public String getFormattedValue(float value) {
-            return super.getFormattedValue(value);
-        }
-
-    }
-
 
     private float calcHours(QuerySnapshot result) {
        totalHours = 0;
