@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.cpd.R;
-import com.example.cpd.Splash;
+import com.example.cpd.auth.Splash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -69,7 +69,7 @@ public class DeleteAccount extends AppCompatActivity {
                 user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("TAG", "User re-authenticated.");
+                        //Log.d("TAG", "User re-authenticated.");
                     }
                 });
 
@@ -77,7 +77,7 @@ public class DeleteAccount extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Log.d("TAG", "User account deleted");
+                            //Log.d("TAG", "User account deleted");
                             startActivity(new Intent(getApplicationContext(), Splash.class));
                             finish();
                         }

@@ -189,7 +189,7 @@ public class SavedAudit extends AppCompatActivity {
                                         documentReference.update(auditFalse).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Log.d("TAG", "Activity successfully removed from audit");
+                                                //Log.d("TAG", "Activity successfully removed from audit");
                                                 notifyDataSetChanged();
                                                 //Toast.makeText(SavedAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
                                             }
@@ -281,7 +281,7 @@ public class SavedAudit extends AppCompatActivity {
                                                 fActivity_Ref4 = document.getString("Activity_Ref4");
                                                 fImage_Url = document.getString("Image_URL");
 
-                                                Log.d("TAG", "activity name is: " + fActivity_Name);
+                                                //Log.d("TAG", "activity name is: " + fActivity_Name);
                                                 data.add(new String[]{fActivity_Name, fActivity_Date, fActivity_Hours, fActivity_Mins, fActivity_Type, fActivity_Description, fActivity_Ref1, fActivity_Ref2, fActivity_Ref3, fActivity_Ref4, fImage_Url});
 
                                             }
@@ -294,7 +294,7 @@ public class SavedAudit extends AppCompatActivity {
                                     }
                                 }
                             } else {
-                                Log.d("TAG", "Error getting documents: " + task.getException());
+                                //Log.d("TAG", "Error getting documents: " + task.getException());
                             }
                         }
                     });

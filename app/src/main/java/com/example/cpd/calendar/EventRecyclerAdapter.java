@@ -198,12 +198,12 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
                     @Override
                     public void onSuccess(Void aVoid) {
                         notifyDataSetChanged();
-                        Log.d("TAG", "Event deleted from Firebase");
+                        //Log.d("TAG", "Event deleted from Firebase");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "Error, event not deleted " + e.getMessage() );
+                        //Log.d("TAG", "Error, event not deleted " + e.getMessage() );
                     }
                 });
             }

@@ -230,7 +230,7 @@ public class CustomCalendarView extends LinearLayout {
         }
         cursor.close();
         dbOpenHelper.close();
-        Log.d("TAG", "getRequestCode: "+code);
+        //Log.d("TAG", "getRequestCode: "+code);
 
         return code;
     }
@@ -299,12 +299,12 @@ public class CustomCalendarView extends LinearLayout {
         documentReference.set(eventFirebase).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d("TAG", "Event added to Firebase database");
+               // Log.d("TAG", "Event added to Firebase database");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", "Upload failed" + e.getMessage());
+               // Log.d("TAG", "Upload failed" + e.getMessage());
             }
         });
     }

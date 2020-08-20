@@ -115,6 +115,10 @@ public class Login extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //extract email and send reset link
                         String mail = resetMail.getText().toString();
+                        if (mail.isEmpty()) {
+                            Toast.makeText(Login.this, "Please enter valid email address.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

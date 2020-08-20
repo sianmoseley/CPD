@@ -148,7 +148,7 @@ public class AuditBuilder extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(AuditBuilder.this, "Activity added", Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "Activity successfully added to audit");
+                                    //Log.d("TAG", "Activity successfully added to audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -177,7 +177,7 @@ public class AuditBuilder extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(AuditBuilder.this, "Activity removed", Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "Activity successfully removed from audit");
+                                    //Log.d("TAG", "Activity successfully removed from audit");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

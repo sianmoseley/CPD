@@ -181,7 +181,7 @@ public class ViewAudit extends AppCompatActivity {
                                         documentReference.update(auditFalse).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Log.d("TAG", "Activity successfully removed from audit");
+                                                //Log.d("TAG", "Activity successfully removed from audit");
                                                 notifyDataSetChanged();
                                                 //Toast.makeText(SavedAudit.this, "Activity removed from audit", Toast.LENGTH_SHORT).show();
                                             }

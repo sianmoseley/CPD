@@ -78,7 +78,6 @@ public class AddActivity extends AppCompatActivity {
     ProgressBar progressBarSave;
     FirebaseFirestore fStore;
     FirebaseUser user;
-    ImageView selectedImage;
     StorageReference storageReference;
     String currentPhotoPath;
     String selectedType = "";
@@ -119,7 +118,7 @@ public class AddActivity extends AppCompatActivity {
 
         addDocBtn = findViewById(R.id.addDocBtn);
         galleryBtn = findViewById(R.id.galleryBtn);
-        selectedImage = findViewById(R.id.imgPreview);
+
 
         fab = findViewById(R.id.fab);
 
@@ -170,7 +169,7 @@ public class AddActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapterHours.getItem(position);
                 selectedHours = ((AutoCompleteTextView)cpdHoursLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected hours is: " + selectedHours);
+                //Log.d("TAG", "selected hours is: " + selectedHours);
             }
         });
 
@@ -197,7 +196,7 @@ public class AddActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapterMins.getItem(position);
                 selectedMins = ((AutoCompleteTextView)cpdMinsLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected mins is: " + selectedMins);
+                //Log.d("TAG", "selected mins is: " + selectedMins);
             }
         });
 
@@ -225,7 +224,7 @@ public class AddActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapterType.getItem(position);
                 selectedType = ((AutoCompleteTextView)cpdTypeLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected type is: " + selectedType);
+                //Log.d("TAG", "selected type is: " + selectedType);
             }
         });
 
@@ -381,7 +380,7 @@ public class AddActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             String downloadURL = uri.toString();
-                            Log.d("TAG", "Download url is: " + downloadURL);
+                            //Log.d("TAG", "Download url is: " + downloadURL);
 
                             String aName = cpdName.getText().toString();
                             String aDesc = cpdDes.getText().toString();

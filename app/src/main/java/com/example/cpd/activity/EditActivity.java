@@ -152,16 +152,19 @@ public class EditActivity extends AppCompatActivity {
         editActivityHoursLayout = findViewById(R.id.editActivityHoursLayout);
         editActivityHours = findViewById(R.id.editActivityHours);
 
+        //SELECTION ARRAY
         String[] hours = new String[]{
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
         };
 
+
+        //POPULATES ARRAY ADAPTER WITH CONTEXT, THE LAYOUT FOR THE DROP DOWN ITEM AND THE ARRAY
         final ArrayAdapter<String> editAdapterHours = new ArrayAdapter<>(
                 EditActivity.this,
                 R.layout.dropdown_item,
                 hours
         );
-
+        //SETS ADAPTER OF DROP DOWN LIST
         editActivityHours.setAdapter(editAdapterHours);
 
         //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
@@ -170,7 +173,7 @@ public class EditActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editAdapterHours.getItem(position);
                 editedHours = ((AutoCompleteTextView)editActivityHoursLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected hours is: " + editedHours);
+                //Log.d("TAG", "selected hours is: " + editedHours);
             }
         });
 
@@ -178,16 +181,18 @@ public class EditActivity extends AppCompatActivity {
         editActivityMinsLayout = findViewById(R.id.editActivityMinsLayout);
         editActivityMins = findViewById(R.id.editActivityMins);
 
+        //SELECTION ARRAY
         String[] mins = new String[]{
                 "0", "15", "30", "45"
         };
 
+        //POPULATES ARRAY ADAPTER WITH CONTEXT, THE LAYOUT FOR THE DROP DOWN ITEM AND THE ARRAY
         final ArrayAdapter<String> editAdapterMins = new ArrayAdapter<>(
                 EditActivity.this,
                 R.layout.dropdown_item,
                 mins
         );
-
+        //SETS ADAPTER OF DROP DOWN LIST
         editActivityMins.setAdapter(editAdapterMins);
 
         //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
@@ -196,7 +201,7 @@ public class EditActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editAdapterMins.getItem(position);
                 editedMins = ((AutoCompleteTextView)editActivityMinsLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected mins is: " + editedMins);
+                //Log.d("TAG", "selected mins is: " + editedMins);
             }
         });
 
@@ -205,16 +210,17 @@ public class EditActivity extends AppCompatActivity {
         editActivityTypeLayout = findViewById(R.id.editActivityTypeLayout);
         editActivityType = findViewById(R.id.editActivityType);
 
+        //SELECTION ARRAY
         final String[] type = new String[]{
                 "Formal Education Completed", "Other Completed", "Professional Activities", "Self-Directed Learning", "Work-Based Learning"
         };
-
+        //POPULATES ARRAY ADAPTER WITH CONTEXT, THE LAYOUT FOR THE DROP DOWN ITEM AND THE ARRAY
         final ArrayAdapter<String> editAdapterType = new ArrayAdapter<>(
                 EditActivity.this,
                 R.layout.dropdown_item,
                 type
         );
-
+        //SETS ADAPTER OF DROP DOWN LIST
         editActivityType.setAdapter(editAdapterType);
 
         //TO CAPTURE USER SELECTION FROM DROP DOWN LIST
@@ -223,7 +229,7 @@ public class EditActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editAdapterType.getItem(position);
                 editedType = ((AutoCompleteTextView)editActivityTypeLayout.getEditText()).getText().toString();
-                Log.d("TAG", "selected type is: " + editedType);
+                //Log.d("TAG", "selected type is: " + editedType);
             }
         });
 
@@ -414,7 +420,7 @@ public class EditActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             String downloadURL = uri.toString();
-                            Log.d("TAG", "Download url is: " + downloadURL);
+                            //Log.d("TAG", "Download url is: " + downloadURL);
 
                             String editedActivityName = editActivityName.getText().toString();
                             String editedActivityDate = editActivityDate.getText().toString();

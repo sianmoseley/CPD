@@ -109,9 +109,9 @@ public class EditAccount extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Log.d("TAG", "User email address updated");
+                            //Log.d("TAG", "User email address updated");
                         } else {
-                            Log.d("TAG","Changes not saved");
+                            //Log.d("TAG","Changes not saved");
                         }
                     }
                 });

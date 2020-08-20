@@ -9,10 +9,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/ic_app_icon"
+        android:label="CPD Journal"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -68,7 +68,7 @@
             android:label="My CPD Activities"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Standards"
+            android:name=".activity.Standards"
             android:label="HCPC CPD Standards"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -84,7 +84,7 @@
             android:label="Add Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Splash"
+            android:name=".auth.Splash"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

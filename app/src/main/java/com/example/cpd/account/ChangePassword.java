@@ -75,7 +75,7 @@ public class ChangePassword extends AppCompatActivity {
                 user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("TAG", "User re-authenticated.");
+                        //Log.d("TAG", "User re-authenticated.");
                     }
                 });
 
@@ -84,9 +84,10 @@ public class ChangePassword extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(ChangePassword.this, "Password updated.", Toast.LENGTH_SHORT).show();
-                            Log.d("TAG", "User password updated");
+                            //Log.d("TAG", "User password updated");
                             progressBar4.setVisibility(View.GONE);
                         }
+                        //TODO: add not successful error message here?
                     }
                 });
 
