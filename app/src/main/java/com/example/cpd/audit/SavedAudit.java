@@ -249,51 +249,43 @@ public class SavedAudit extends AppCompatActivity {
                             .collection("myCPD")
                             .whereEqualTo("In_Audit", true);
 
-
-                    //TODO: SO FAR, ONLY RETURNS LAST RESULT OF QUERY
                     query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
-                                for (QueryDocumentSnapshot document : task.getResult()){
+                                //CSVWRITER LIBRARY USED TO CREATED CSV FILE
+                                try {
+                                    CSVWriter writer = new CSVWriter((new FileWriter(csv, true)));
 
-                                    //Log.d("TAG", document.getId() + " => " + document.getData());
+                                    List<String[]> data = new ArrayList<String[]>();
+                                    data.add(new String[]{"Profession", "CPD_Number", "Summary_Text", "Personal_Statement"});
+                                    data.add(new String[]{fProfession, fCpd_Number, fSummary_Text, fPersonal_Statement});
+                                    data.add(new String[]{"Activity_Name", "Activity_Date", "Activity_Hours", "Activity_Mins", "Activity_Type", "Activity_Description", "Activity_Ref1", "Activity_Ref2", "Activity_Ref3", "Activity_Ref4", "Image_Url"});
 
-                                    //CSVWRITER LIBRARY USED TO CREATED CSV FILE
-                                    try {
-                                        CSVWriter writer = new CSVWriter((new FileWriter(csv)));
+                                    for (QueryDocumentSnapshot document : task.getResult()){
 
-                                        List<String[]> data = new ArrayList<String[]>();
-                                        data.add(new String[]{"Profession", "CPD_Number", "Summary_Text", "Personal_Statement"});
-                                        data.add(new String[]{fProfession, fCpd_Number, fSummary_Text, fPersonal_Statement});
-                                        data.add(new String[]{"Activity_Name", "Activity_Date", "Activity_Hours", "Activity_Mins", "Activity_Type", "Activity_Description", "Activity_Ref1", "Activity_Ref2", "Activity_Ref3", "Activity_Ref4", "Image_Url"});
-
-                                            for (int i = 0; i < task.getResult().size(); i++) {
-
-                                                fActivity_Name = document.getString("Activity_Name");
-                                                fActivity_Date = document.getString("Activity_Date");
-                                                fActivity_Hours = document.getString("Activity_Hours");
-                                                fActivity_Mins = document.getString("Activity_Mins");
-                                                fActivity_Type = document.getString("Activity_Type");
-                                                fActivity_Description = document.getString("Activity_Description");
-                                                fActivity_Ref1 = document.getString("Activity_Ref1");
-                                                fActivity_Ref2 = document.getString("Activity_Ref2");
-                                                fActivity_Ref3 = document.getString("Activity_Ref3");
-                                                fActivity_Ref4 = document.getString("Activity_Ref4");
-                                                fImage_Url = document.getString("Image_URL");
-
-                                                Log.d("TAG", "activity name is: " + fActivity_Name);
-                                                data.add(new String[]{fActivity_Name, fActivity_Date, fActivity_Hours, fActivity_Mins, fActivity_Type, fActivity_Description, fActivity_Ref1, fActivity_Ref2, fActivity_Ref3, fActivity_Ref4, fImage_Url});
-
-                                            }
-
-                                        writer.writeAll(data);
-                                        writer.close();
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                        fActivity_Name = document.getString("Activity_Name");
+                                        fActivity_Date = document.getString("Activity_Date");
+                                        fActivity_Hours = document.getString("Activity_Hours");
+                                        fActivity_Mins = document.getString("Activity_Mins");
+                                        fActivity_Type = document.getString("Activity_Type");
+                                        fActivity_Description = document.getString("Activity_Description");
+                                        fActivity_Ref1 = document.getString("Activity_Ref1");
+                                        fActivity_Ref2 = document.getString("Activity_Ref2");
+                                        fActivity_Ref3 = document.getString("Activity_Ref3");
+                                        fActivity_Ref4 = document.getString("Activity_Ref4");
+                                        fImage_Url = document.getString("Image_URL");
+                                        //Log.d("TAG", document.getId() + " => " + document.getData());
+                                        data.add(new String[]{fActivity_Name, fActivity_Date, fActivity_Hours, fActivity_Mins, fActivity_Type, fActivity_Description, fActivity_Ref1, fActivity_Ref2, fActivity_Ref3, fActivity_Ref4, fImage_Url});
                                     }
+
+                                    writer.writeAll(data);
+                                    writer.close();
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
+
                             } else {
                                 //Log.d("TAG", "Error getting documents: " + task.getException());
                             }
