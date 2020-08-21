@@ -24,7 +24,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         String time = intent.getStringExtra("time");
         int notId = intent.getIntExtra("id",0);
 
-        //TODO: MIGHT NEED TO CHANGE THIS TO CALENDAR CLASS, NOT MAIN ACTIVITY
         Intent activityIntent = new Intent(context, Calendar.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,activityIntent,PendingIntent.FLAG_ONE_SHOT);
 

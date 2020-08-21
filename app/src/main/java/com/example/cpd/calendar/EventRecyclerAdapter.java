@@ -174,48 +174,6 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     private void deleteCalendarEvent(String event,String date,String time){
 
-        //TODO: TO TRY DELETE EVENT FROM FIREBASE BUT DOESN'T WORK
-        fStore = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        Query query = fStore.collection("events").document(user.getUid())
-                .collection("events");
-
-        FirestoreRecyclerOptions<Event> allEvents = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, Event.class)
-                .build();
-
-        eventAdapter = new FirestoreRecyclerAdapter<Event, EventViewHolder>(allEvents) {
-            @Override
-            protected void onBindViewHolder(@NonNull EventViewHolder eventViewHolder, int i, @NonNull Event event) {
-                String docID = eventAdapter.getSnapshots().getSnapshot(i).getId();
-
-                DocumentReference documentReference = fStore.collection("events")
-                        .document(user.getUid())
-                        .collection("events")
-                        .document(docID);
-                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        notifyDataSetChanged();
-                        //Log.d("TAG", "Event deleted from Firebase");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Log.d("TAG", "Error, event not deleted " + e.getMessage() );
-                    }
-                });
-            }
-
-            @NonNull
-            @Override
-            public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return null;
-            }
-        };
-
-
         //DELETE EVENT FROM MYSQL DATABASE
         dbOpenHelper = new DBOpenHelper(context);
         SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
@@ -282,8 +240,6 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         dbOpenHelper.close();
     }
 
-
-    //TODO: TO TRY DELETE EVENT FROM FIREBASE BUT DOESN'T WORK
     public class EventViewHolder extends RecyclerView.ViewHolder{
         TextView eEventdate, eEventname, eEventtime;
         View view;

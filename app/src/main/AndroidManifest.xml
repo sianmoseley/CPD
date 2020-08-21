@@ -102,6 +102,11 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <receiver android:name=".calendar.AlarmReceiver"
+            android:exported="true"
+            android:enabled="true">
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.cpd.provider"

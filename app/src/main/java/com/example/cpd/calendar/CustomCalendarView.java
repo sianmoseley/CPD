@@ -162,7 +162,6 @@ public class CustomCalendarView extends LinearLayout {
 
                         if (alarmMe.isChecked()){
                             fNotification = true;
-                            SaveEventToFirebase(EventName.getText().toString(),EventTime.getText().toString(),date,month,year, fNotification);
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"on");
                             SetUpCalendar();
                             Calendar calendar = Calendar.getInstance();
@@ -173,7 +172,6 @@ public class CustomCalendarView extends LinearLayout {
                             alertDialog.dismiss();
                         }else{
                             fNotification = false;
-                            SaveEventToFirebase(EventName.getText().toString(),EventTime.getText().toString(),date,month,year, fNotification);
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"off");
                             SetUpCalendar();
                             alertDialog.dismiss();
@@ -235,7 +233,6 @@ public class CustomCalendarView extends LinearLayout {
         return code;
     }
 
-    //TODO: MIGHT BE ABLE TO GET RID OF THIS IF GET FIREBASE NOTIFICATIONS WORKING
     private void setAlarm(Calendar calendar,String event,String time,int RequestCOde){
         Intent intent = new Intent(context.getApplicationContext(),AlarmReceiver.class);
         intent.putExtra("event",event);
@@ -278,38 +275,6 @@ public class CustomCalendarView extends LinearLayout {
         dbOpenHelper.close();
         Toast.makeText(context, "Event Saved", Toast.LENGTH_SHORT).show();
     }
-
-    private void SaveEventToFirebase(String event,String time,String date, String month,String year, boolean notify) {
-        //ADDS DATA TO FIREBASE
-        fStore = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        DocumentReference documentReference = fStore.collection("calendar")
-                .document(user.getUid())
-                .collection("events")
-                .document();
-
-        Map<String, Object> eventFirebase = new HashMap<>();
-        eventFirebase.put("Event_Name", event);
-        eventFirebase.put("Event_Time", time);
-        eventFirebase.put("Event_Date", date);
-        eventFirebase.put("Event_Year", year);
-        eventFirebase.put("Notify", notify);
-
-        documentReference.set(eventFirebase).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-               // Log.d("TAG", "Event added to Firebase database");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-               // Log.d("TAG", "Upload failed" + e.getMessage());
-            }
-        });
-    }
-
-
 
     private void IntializeLayout(){
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

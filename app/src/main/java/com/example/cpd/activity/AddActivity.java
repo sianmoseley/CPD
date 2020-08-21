@@ -319,7 +319,6 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    //TODO: NOT SURE IF I NEED THIS?
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -338,7 +337,6 @@ public class AddActivity extends AppCompatActivity {
         return image;
     }
 
-    //TODO: THIS IS SUPPOSED TO CREATE THE FILE IN USERS GALLERY IF THEY TAKE A PICTURE BUT IT DOESN'T WORK
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -353,7 +351,7 @@ public class AddActivity extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
+                        "com.example.cpd.provider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);

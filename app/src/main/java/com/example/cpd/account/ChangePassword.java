@@ -87,7 +87,6 @@ public class ChangePassword extends AppCompatActivity {
                             //Log.d("TAG", "User password updated");
                             progressBar4.setVisibility(View.GONE);
                         }
-                        //TODO: add not successful error message here?
                     }
                 });
 

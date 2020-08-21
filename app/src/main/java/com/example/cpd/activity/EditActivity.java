@@ -357,7 +357,6 @@ public class EditActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: THIS IS SUPPOSED TO CREATE THE FILE IN USERS GALLERY IF THEY TAKE A PICTURE BUT IT DOESN'T WORK - REPEAT FROM ADD ACTIVITY
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -380,7 +379,6 @@ public class EditActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: NOT SURE IF I NEED THIS? - REPEAT FROM ADD ACTIVITY
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

@@ -285,10 +285,8 @@ public class SavedAudit extends AppCompatActivity {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
-                            } else {
-                                //Log.d("TAG", "Error getting documents: " + task.getException());
                             }
+
                         }
                     });
 
