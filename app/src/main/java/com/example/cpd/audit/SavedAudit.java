@@ -255,7 +255,7 @@ public class SavedAudit extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 //CSVWRITER LIBRARY USED TO CREATED CSV FILE
                                 try {
-                                    CSVWriter writer = new CSVWriter((new FileWriter(csv, true)));
+                                    CSVWriter writer = new CSVWriter((new FileWriter(csv)));
 
                                     List<String[]> data = new ArrayList<String[]>();
                                     data.add(new String[]{"Profession", "CPD_Number", "Summary_Text", "Personal_Statement"});
