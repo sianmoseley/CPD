@@ -8,9 +8,11 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -228,8 +230,7 @@ public class SavedAudit extends AppCompatActivity {
 
 
         //TO CREATE SAVED AUDIT PROFILE AS A CSV.FILE THAT IS THEN EMAILED TO THE USER
-        //CREATED FILE PATH - DEPRECATED AT SKD29 BUT MANIFEST SET TO OVERRIDE THIS AS ALTERNATIVE METHOD NOT FOUND
-        final String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyCPDAudit.csv");
+        final File csv = new File(getExternalFilesDir(null), "/MyCPDAudit.csv");
 
         exportProfileBtn = findViewById(R.id.exportProfileBtn);
         exportProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -281,7 +282,7 @@ public class SavedAudit extends AppCompatActivity {
                                                 fActivity_Ref4 = document.getString("Activity_Ref4");
                                                 fImage_Url = document.getString("Image_URL");
 
-                                                //Log.d("TAG", "activity name is: " + fActivity_Name);
+                                                Log.d("TAG", "activity name is: " + fActivity_Name);
                                                 data.add(new String[]{fActivity_Name, fActivity_Date, fActivity_Hours, fActivity_Mins, fActivity_Type, fActivity_Description, fActivity_Ref1, fActivity_Ref2, fActivity_Ref3, fActivity_Ref4, fImage_Url});
 
                                             }
@@ -307,12 +308,23 @@ public class SavedAudit extends AppCompatActivity {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "My Audit Profile");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, "Thank you for using CPD Journal to build your CPD Audit Profile. Please see the attached file for your records.");
+                emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                File file = new File(csv);
-                Uri uri = FileProvider.getUriForFile(SavedAudit.this, "com.example.cpd.provider", file);
+                //File file = new File(csv);
+                Log.d("TAG", "csv = " + csv);
+
+                Uri uri = FileProvider.getUriForFile(SavedAudit.this, "com.example.cpd.provider", csv);
+                Log.d("TAG", "uri = " + uri);
+
+
                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                String packageName = getApplicationContext().getPackageName();
+//                grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                 //USER CAN SELECT HOW THEY WANT TO SHARE THE CSV FILE
                 startActivity(Intent.createChooser(emailIntent, "Pick an email provider"));
+
 
             }
         });

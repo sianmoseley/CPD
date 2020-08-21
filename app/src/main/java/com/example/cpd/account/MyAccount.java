@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MyAccount extends AppCompatActivity {
 
-    Button  notificationBtn, deleteBtn, changePasswordBtn;
+    Button deleteBtn, changePasswordBtn;
 
     FirebaseUser user;
     FirebaseAuth fAuth;
@@ -31,8 +31,6 @@ public class MyAccount extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        notificationBtn = findViewById(R.id.notificationBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
         changePasswordBtn = findViewById(R.id.changePasswordBtn);
 
