@@ -49,8 +49,8 @@ public class AuditBuilder extends AppCompatActivity {
     TextView activityHelper, professionEditText, cpdNumberEditText, summaryEditText, personalStatementEditText;
     Button viewAuditProgress;
 
-    List<Integer> activityList = new ArrayList<>();
-    SparseBooleanArray sparseBooleanArray = new SparseBooleanArray();
+    final List<Integer> activityList = new ArrayList<>();
+    final SparseBooleanArray sparseBooleanArray = new SparseBooleanArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,9 +246,11 @@ public class AuditBuilder extends AppCompatActivity {
 
 
     public class AuditViewHolder extends RecyclerView.ViewHolder {
-        TextView aAuditActivityName, aAuditActivityType, aAuditActivityDate;
-        View view;
-        CheckBox auditCheckBox;
+        final TextView aAuditActivityName;
+        final TextView aAuditActivityType;
+        final TextView aAuditActivityDate;
+        final View view;
+        final CheckBox auditCheckBox;
 
         public AuditViewHolder(@NonNull View itemView) {
             super(itemView);

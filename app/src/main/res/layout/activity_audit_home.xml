@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:textSize="16sp"
         android:text="If you have been randomly selected to complete a CPD audit, you will need to complete the following steps:"

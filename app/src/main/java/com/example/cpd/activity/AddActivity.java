@@ -106,20 +106,15 @@ public class AddActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         imgPreview = findViewById(R.id.imgPreview);
-
         progressBarSave = findViewById(R.id.progressBar);
-
         cpdName = findViewById(R.id.addActivityName);
         cpdDes = findViewById(R.id.addActivityDescription);
         cpdRef1 = findViewById(R.id.addReflection1);
         cpdRef2 = findViewById(R.id.addReflection2);
         cpdRef3 = findViewById(R.id.addReflection3);
         cpdRef4 = findViewById(R.id.addReflection4);
-
         addDocBtn = findViewById(R.id.addDocBtn);
         galleryBtn = findViewById(R.id.galleryBtn);
-
-
         fab = findViewById(R.id.fab);
 
 

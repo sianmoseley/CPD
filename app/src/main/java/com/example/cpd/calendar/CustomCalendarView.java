@@ -62,10 +62,8 @@ public class CustomCalendarView extends LinearLayout {
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM",Locale.ENGLISH);
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
     SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
-    boolean fNotification;
 
-    FirebaseUser user;
-    FirebaseFirestore fStore;
+
 
 
     MyGridAdapter myGridAdapter;
@@ -161,7 +159,6 @@ public class CustomCalendarView extends LinearLayout {
                     public void onClick(View v) {
 
                         if (alarmMe.isChecked()){
-                            fNotification = true;
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"on");
                             SetUpCalendar();
                             Calendar calendar = Calendar.getInstance();
@@ -171,7 +168,6 @@ public class CustomCalendarView extends LinearLayout {
                                     ,EventName.getText().toString(),EventTime.getText().toString()));
                             alertDialog.dismiss();
                         }else{
-                            fNotification = false;
                             SaveEvent(EventName.getText().toString(),EventTime.getText().toString(),date,month,year,"off");
                             SetUpCalendar();
                             alertDialog.dismiss();

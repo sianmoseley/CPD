@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.cpd.MainActivity;
@@ -31,9 +32,11 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 //CHECKS IF USER IS LOGGED IN
                 if(fAuth.getCurrentUser() != null){
+                    Log.d("TAG", "User is authenticated.");
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {
+                    Log.d("TAG", "User not logged in.");
                     startActivity(new Intent(getApplicationContext(), Login.class));
                     finish();
                 }
