@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +44,7 @@ public class AuditBuilder extends AppCompatActivity {
     FirestoreRecyclerAdapter<Activity, AuditBuilder.AuditViewHolder> auditAdapter;
     FirebaseUser user;
     FirebaseAuth fAuth;
-    TextView activityHelper, professionEditText, cpdNumberEditText, summaryEditText, personalStatementEditText;
+    TextView professionEditText, cpdNumberEditText, summaryEditText, personalStatementEditText;
     Button viewAuditProgress;
 
     final List<Integer> activityList = new ArrayList<>();
@@ -61,11 +59,12 @@ public class AuditBuilder extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //INITIALIZE FIREBASE INSTANCES
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+
         auditList = findViewById(R.id.auditList);
-        activityHelper = findViewById(R.id.activityHelper);
         viewAuditProgress = findViewById(R.id.viewAuditProgress);
 
         //TO PASS INFO FROM ONE ACTIVITY TO ANOTHER
@@ -85,7 +84,7 @@ public class AuditBuilder extends AppCompatActivity {
         personalStatementEditText.setText(getIntent().getStringExtra("Personal_Statement"));
         personalStatementEditText.setVisibility(View.INVISIBLE);
 
-        //BUTTON CLICK
+        //BUTTON CLICK EVENT
         viewAuditProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

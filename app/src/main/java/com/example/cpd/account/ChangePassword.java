@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,28 +43,34 @@ public class ChangePassword extends AppCompatActivity {
         saveChangesBtn = findViewById(R.id.saveChangesBtn);
         progressBar4 = findViewById(R.id.progressBar4);
 
+        //INITIALIZE FIREBASE INSTANCES
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
 
+        //SET BUTTON CLICK EVENT
         saveChangesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //SAVE USER INPUT TO STRINGS
                 String cEmail = currentEmail.getText().toString();
                 String cPassword = currentPassword.getText().toString();
                 String nPassword = newPassword.getText().toString();
                 String checkPassword = confirmNewPassword.getText().toString();
 
+                //CHECK STRINGS NOT EMPTY
                 if (cEmail.isEmpty() || cPassword.isEmpty() || nPassword.isEmpty() || checkPassword.isEmpty()){
                     Toast.makeText(ChangePassword.this, "All fields are required", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                //CHECK PASSWORD INPUTS MATCH
                 if(!nPassword.equals(checkPassword)){
                     confirmNewPassword.setError("Passwords Do not Match.");
                     progressBar4.setVisibility(View.GONE);
                 }
 
+                //SET VISIBILITY OF PROGRESS
                 progressBar4.setVisibility(View.VISIBLE);
 
                 //RE-AUTHENTICATE USER
@@ -79,6 +84,7 @@ public class ChangePassword extends AppCompatActivity {
                     }
                 });
 
+                //USER INFORMATION PASSED TO FIREBASE UPDATE PASSWORD METHOD
                 user.updatePassword(nPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

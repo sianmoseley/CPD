@@ -11,17 +11,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.cpd.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MyAccount extends AppCompatActivity {
 
     Button deleteBtn, changePasswordBtn;
-
-    FirebaseUser user;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +27,7 @@ public class MyAccount extends AppCompatActivity {
         deleteBtn = findViewById(R.id.deleteBtn);
         changePasswordBtn = findViewById(R.id.changePasswordBtn);
 
-        //INITIALIZE FIREBASE INSTANCES
-        fAuth = FirebaseAuth.getInstance();
-        user = fAuth.getCurrentUser();
-        fStore = FirebaseFirestore.getInstance();
-
-
+        //SET BUTTON CLICK EVENT
         changePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +36,7 @@ public class MyAccount extends AppCompatActivity {
             }
         });
 
+        //SET BUTTON CLICK EVENT
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

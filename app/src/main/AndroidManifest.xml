@@ -56,10 +56,6 @@
             android:label="Change Password"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".account.EditAccount"
-            android:label="Edit Account Details"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".account.MyAccount"
             android:label="My Account"
             android:theme="@style/AppTheme.NoActionBar" />

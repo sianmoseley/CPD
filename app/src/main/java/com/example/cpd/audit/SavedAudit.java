@@ -8,13 +8,10 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -37,14 +34,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.local.QueryEngine;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -57,7 +52,7 @@ import java.util.Map;
 
 public class SavedAudit extends AppCompatActivity {
 
-    TextView savedProfessionTitle, savedProfessionText, savedCpdTitle, savedCpdNumberText, savedSummaryTitle, savedSummaryText, savedPersonalStatementTitle, savedPersonalStatementText;
+    TextView savedProfessionText, savedCpdNumberText, savedSummaryText, savedPersonalStatementText;
     Button exportProfileBtn, editProfileBtn;
     FirebaseUser user;
     FirebaseAuth fAuth;
@@ -77,9 +72,11 @@ public class SavedAudit extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //INITIALISE FIREBASE INSTANCES
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+
         savedAuditViewList = findViewById(R.id.savedAuditViewList);
 
 
@@ -91,12 +88,6 @@ public class SavedAudit extends AppCompatActivity {
                 finish();
             }
         });
-
-        savedProfessionTitle = findViewById(R.id.savedProfessionTitle);
-        savedCpdTitle = findViewById(R.id.savedCpdTitle);
-        savedSummaryTitle = findViewById(R.id.savedSummaryTitle);
-        savedPersonalStatementTitle = findViewById(R.id.savedPersonalStatementTitle);
-
 
         //DOCUMENT REFERENCE TO DISPLAY SAVED AUDIT TEXT
         DocumentReference documentReference = fStore.collection("audits")
@@ -221,7 +212,7 @@ public class SavedAudit extends AppCompatActivity {
             @Override
             public SavedAuditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.auditview_view_layout, parent, false);
-                return new SavedAudit.SavedAuditViewHolder(view);
+                return new SavedAuditViewHolder(view);
             }
         };
 
@@ -257,7 +248,7 @@ public class SavedAudit extends AppCompatActivity {
                                 try {
                                     CSVWriter writer = new CSVWriter((new FileWriter(csv)));
 
-                                    List<String[]> data = new ArrayList<String[]>();
+                                    List<String[]> data = new ArrayList<>();
                                     data.add(new String[]{"Profession", "CPD_Number", "Summary_Text", "Personal_Statement"});
                                     data.add(new String[]{fProfession, fCpd_Number, fSummary_Text, fPersonal_Statement});
                                     data.add(new String[]{"Activity_Name", "Activity_Date", "Activity_Hours", "Activity_Mins", "Activity_Type", "Activity_Description", "Activity_Ref1", "Activity_Ref2", "Activity_Ref3", "Activity_Ref4", "Image_Url"});
@@ -347,9 +338,12 @@ public class SavedAudit extends AppCompatActivity {
 
     }
 
-    public class SavedAuditViewHolder extends RecyclerView.ViewHolder{
-        TextView sActivityName, sActivityType, sActivityDate, sActivityTime;
-        View view;
+    public static class SavedAuditViewHolder extends RecyclerView.ViewHolder{
+        final TextView sActivityName;
+        final TextView sActivityType;
+        final TextView sActivityDate;
+        final TextView sActivityTime;
+        final View view;
         public SavedAuditViewHolder(@NonNull View itemView) {
             super(itemView);
             sActivityName = itemView.findViewById(R.id.auditViewActivityName);

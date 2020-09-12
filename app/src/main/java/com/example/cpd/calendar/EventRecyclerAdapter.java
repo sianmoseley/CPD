@@ -2,12 +2,10 @@ package com.example.cpd.calendar;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cpd.R;
-import com.example.cpd.activity.MyActivities;
-import com.example.cpd.model.Activity;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.events.Event;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,13 +27,9 @@ import java.util.Locale;
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder> {
 
-    Context context;
-    ArrayList<Events> arrayList ;
+    final Context context;
+    final ArrayList<Events> arrayList ;
     DBOpenHelper dbOpenHelper;
-
-    FirebaseUser user;
-    FirebaseFirestore fStore;
-    FirestoreRecyclerAdapter<Event, EventRecyclerAdapter.EventViewHolder> eventAdapter;
 
 
     public EventRecyclerAdapter(Context context, ArrayList<Events> arrayList) {
@@ -124,18 +106,18 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
 
-
-
     @Override
     public int getItemCount() {
         return arrayList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView DateTxt,Event,Time;
-        Button delete;
-        ImageButton setAlarm;
+        final TextView DateTxt;
+        final TextView Event;
+        final TextView Time;
+        final Button delete;
+        final ImageButton setAlarm;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             DateTxt = itemView.findViewById(R.id.eventdate);
@@ -240,16 +222,5 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         dbOpenHelper.close();
     }
 
-    public class EventViewHolder extends RecyclerView.ViewHolder{
-        TextView eEventdate, eEventname, eEventtime;
-        View view;
-        public EventViewHolder(@NonNull View itemView) {
-            super(itemView);
-            eEventdate = itemView.findViewById(R.id.eventdate);
-            eEventname = itemView.findViewById(R.id.eventname);
-            eEventtime = itemView.findViewById(R.id.eventtime);
-            view = itemView;
-        }
-    }
 
 }

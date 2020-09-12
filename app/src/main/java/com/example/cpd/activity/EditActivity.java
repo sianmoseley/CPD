@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,13 +24,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cpd.MainActivity;
 import com.example.cpd.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -233,7 +230,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-
+        //SET BUTTON CLICK
         editPicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,6 +238,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
+        //SET BUTTON CLICK
         editGalleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +258,7 @@ public class EditActivity extends AppCompatActivity {
         activityHoursString = data.getStringExtra("Activity_Hours");
         activityMinsString = data.getStringExtra("Activity_Mins");
 
+        //SETS DROPDOWN LIST AS PER DATABASE AND SHOWS WHOLE ARRAY SELECTION
         activityType.setAdapter(editAdapterType);
         activityType.setText(activityTypeString, false);
         editedType = activityTypeString;
@@ -366,7 +365,7 @@ public class EditActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -398,6 +397,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
+    //METHOD TO SAVE CHANGES TO FIREBASE
     private void saveChangesToFirebase() {
 
         if (imgUrl != null){
@@ -405,6 +405,7 @@ public class EditActivity extends AppCompatActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = timeStamp + ".JPEG";
 
+            //STORAGE REFERENCE IN FIRESTORE
             final StorageReference image = storageReference.child(user.getUid() + "/cpdDocuments/" + imageFileName);
 
             UploadTask uploadTask = image.putFile(imgUrl);
@@ -452,6 +453,7 @@ public class EditActivity extends AppCompatActivity {
                             editActivity.put("Activity_Ref4", editedRef4);
                             editActivity.put("Image_URL", downloadURL);
 
+                            //UPDATE DOCUMENT REFERENCE (ACTIVITY)
                             documentReference.update(editActivity).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

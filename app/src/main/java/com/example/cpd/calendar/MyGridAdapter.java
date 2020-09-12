@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyGridAdapter extends ArrayAdapter {
-    List<Date> dates;
-    Calendar currentDate;
-    List<Events> events;
-    LayoutInflater inflater;
+    final List<Date> dates;
+    final Calendar currentDate;
+    final List<Events> events;
+    final LayoutInflater inflater;
 
     public MyGridAdapter(@NonNull Context context, List<Date> dates,Calendar currentDate,List<Events> events ) {
         super(context, R.layout.single_cell_layout);

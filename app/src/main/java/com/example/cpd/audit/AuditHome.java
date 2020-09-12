@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.cpd.R;
-import com.example.cpd.audit.AuditBuilder;
 
 public class AuditHome extends AppCompatActivity {
 
@@ -29,6 +28,7 @@ public class AuditHome extends AppCompatActivity {
 
 
         startProfileBtn = findViewById(R.id.startProfileBtn);
+        //SET BUTTON CLICK EVENT
         startProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +37,7 @@ public class AuditHome extends AppCompatActivity {
         });
 
         viewProfileBtn = findViewById(R.id.viewProfileBtn);
+        //SET BUTTON CLICK EVENT
         viewProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,7 +3,6 @@ package com.example.cpd.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,6 +43,7 @@ public class ActivityDetails extends AppCompatActivity {
         TextView aDetailsRef3 = findViewById(R.id.activityDetailsRef3);
         TextView aDetailsRef4= findViewById(R.id.activityDetailsRef4);
         ImageView aImagePrev = findViewById(R.id.activityImgPreview);
+        FloatingActionButton fab = findViewById(R.id.editBtn);
 
         //SETS SCROLLING IN MULTILINE
         aDetailsDescription.setMovementMethod(new ScrollingMovementMethod());
@@ -63,12 +63,11 @@ public class ActivityDetails extends AppCompatActivity {
         Picasso.get().load(imgUrl).into(aImagePrev);
 
 
-
-
-        FloatingActionButton fab = findViewById(R.id.editBtn);
+        //SET BUTTON CLICK EVENT
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //INTENT PASSES ACTIVITY INFO TO EDIT ACTIVITY CLASS
                 Intent i = new Intent(view.getContext(),EditActivity.class);
                 i.putExtra("Activity_Name", data.getStringExtra("Activity_Name"));
                 i.putExtra("Activity_Description", data.getStringExtra("Activity_Description"));

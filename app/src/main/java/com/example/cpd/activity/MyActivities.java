@@ -184,9 +184,12 @@ public class MyActivities extends AppCompatActivity {
 
     }
 
-    public class ActivityViewHolder extends RecyclerView.ViewHolder {
-        TextView mActivityName, mActivityType, mActivityTime, mActivityDate;
-        View view;
+    public static class ActivityViewHolder extends RecyclerView.ViewHolder {
+        final TextView mActivityName;
+        final TextView mActivityType;
+        final TextView mActivityTime;
+        final TextView mActivityDate;
+        final View view;
         public ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
             mActivityDate = itemView.findViewById(R.id.activityDate);

@@ -4,15 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.example.cpd.R;
 

@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +39,7 @@ public class DeleteAccount extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        //INITIALIZE FIREBASE INSTANCES
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
 
@@ -49,12 +48,16 @@ public class DeleteAccount extends AppCompatActivity {
         userPassword = findViewById(R.id.userPassword);
         progressBar5 = findViewById(R.id.progressBar5);
 
+        //SET BUTTON CLICK EVENT
         deleteAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //SAVE USER INPUT TO STRINGS
                 String dEmail = userEmail.getText().toString();
                 String dPassword = userPassword.getText().toString();
 
+                //CHECKS STRINGS AREN'T EMPTY
                 if (dEmail.isEmpty() || dPassword.isEmpty()){
                     Toast.makeText(DeleteAccount.this, "All fields required", Toast.LENGTH_SHORT).show();
                     return;
@@ -73,6 +76,7 @@ public class DeleteAccount extends AppCompatActivity {
                     }
                 });
 
+                //FIREBASE DELETE METHOD CALLED ON USER
                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.cpd.MainActivity;
 import com.example.cpd.R;
@@ -22,6 +21,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //INITIALISE FIREBASE INSTANCE
         fAuth = FirebaseAuth.getInstance();
 
         Handler handler = new Handler();

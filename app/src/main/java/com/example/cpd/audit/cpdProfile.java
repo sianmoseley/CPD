@@ -52,6 +52,7 @@ public class cpdProfile extends AppCompatActivity {
 
         evidenceHelper.setText("Next, select your supporting evidence.");
 
+        //SET BUTTON CLICK EVENT
         SupportingEvidenceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

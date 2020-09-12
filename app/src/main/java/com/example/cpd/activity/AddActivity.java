@@ -2,32 +2,22 @@ package com.example.cpd.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +50,6 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +116,7 @@ public class AddActivity extends AppCompatActivity {
         builder.setTitleText("Select a date");
         final MaterialDatePicker materialDatePicker = builder.build();
 
-
+       //SET BUTTON CLICK LISTENER
        mDate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -240,7 +229,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        //TRIGGER SAVE METHOD
+        //SET BUTTON CLICK EVENT
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -256,6 +245,7 @@ public class AddActivity extends AppCompatActivity {
                     if (selectedMins.trim().length() == 0){
                         cpdMinsLayout.setError("Please select Minutes");
                     }
+
                 }
             }
         });
@@ -341,7 +331,7 @@ public class AddActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -354,6 +344,7 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    //METHOD TO UPLOAD TO FIREBASE
     private void uploadToFirebase() {
         //IF USER ADDS IMAGE - SAVES IMAGE TO FIRESTORE THEN FIREBASE
         if (imgUrl != null){

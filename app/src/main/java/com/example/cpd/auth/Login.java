@@ -7,11 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,21 +21,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
 
     Button loginBtn, createAcc;
     TextView forgetPass;
     FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    FirebaseUser user;
     ProgressBar spinner;
-    ImageView logo;
+
 
     TextInputEditText lEmail, lPassword;
 
@@ -50,25 +43,26 @@ public class Login extends AppCompatActivity {
         lEmail = findViewById(R.id.email);
         lPassword = findViewById(R.id.lPassword);
         loginBtn = findViewById(R.id.loginBtn);
-        logo = findViewById(R.id.logo);
+
 
         spinner = findViewById(R.id.progressBar3);
 
         forgetPass = findViewById(R.id.forgotPassword);
         createAcc = findViewById(R.id.createAccount);
 
-        //INITIALIZE FIREBASE INSTANCES
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        //INITIALIZE FIREBASE INSTANCE
         fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
 
+        //SET BUTTON CLICK
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //SAVE USER INPUT TO STRING
                 String email = lEmail.getText().toString().trim();
                 String password = lPassword.getText().toString().trim();
 
+                //CHECK STRINGS AREN'T EMPTY
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(Login.this, "Fields are required", Toast.LENGTH_SHORT).show();
                     return;
@@ -76,8 +70,7 @@ public class Login extends AppCompatActivity {
 
                 spinner.setVisibility(View.VISIBLE);
 
-                //authenticate the user
-
+                //USER INPUTS PASSED TO FIREBASE SIGN IN METHOD
                 fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -94,6 +87,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //SET BUTTON CLICK
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,10 +95,12 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //SET LINK CLICK
         forgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText resetMail = new EditText(v.getContext());
+                //BUILD ALERT DIALOG
                 AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
                 passwordResetDialog.setTitle("Reset password?");
                 passwordResetDialog.setMessage("Please enter your email");

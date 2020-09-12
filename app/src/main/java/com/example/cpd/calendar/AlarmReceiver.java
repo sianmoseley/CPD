@@ -13,7 +13,6 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.cpd.MainActivity;
 import com.example.cpd.R;
 
 public class AlarmReceiver extends BroadcastReceiver {

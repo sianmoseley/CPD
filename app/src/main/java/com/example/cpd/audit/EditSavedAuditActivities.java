@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +52,7 @@ public class EditSavedAuditActivities extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        //INITIALISE FIREBASE INSTANCES
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
@@ -209,10 +207,12 @@ public class EditSavedAuditActivities extends AppCompatActivity {
 
     }
 
-    public class EditAuditViewHolder extends RecyclerView.ViewHolder {
-        TextView eAuditActivityName, eAuditActivityType, eAuditActivityDate;
-        View view;
-        CheckBox editAuditCheckBox;
+    public static class EditAuditViewHolder extends RecyclerView.ViewHolder {
+        final TextView eAuditActivityName;
+        final TextView eAuditActivityType;
+        final TextView eAuditActivityDate;
+        final View view;
+        final CheckBox editAuditCheckBox;
 
         public EditAuditViewHolder(@NonNull View itemView) {
             super(itemView);

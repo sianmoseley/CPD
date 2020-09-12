@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -57,12 +55,12 @@ public class ViewAudit extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //INITIALISE FIREBASE INSTANCES
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+
         auditViewList = findViewById(R.id.auditViewList);
-
-
 
         //CODE TO DISPLAY WHAT USER HAD ENTERED IN CPD PROFILE CLASS
         professionText = findViewById(R.id.professionText);
@@ -79,7 +77,6 @@ public class ViewAudit extends AppCompatActivity {
 
         //BUTTON CLICK TO SAVE EDIT TEXT FIELDS TO FIREBASE WITH SELECTED ACTIVITIES FOR AUDIT
         saveProfileBtn = findViewById(R.id.saveProfileBtn);
-
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,9 +219,12 @@ public class ViewAudit extends AppCompatActivity {
 
     }
 
-    public class ViewAuditViewHolder extends RecyclerView.ViewHolder {
-        TextView vActivityName, vActivityType, vActivityDate, vActivityTime;
-        View view;
+    public static class ViewAuditViewHolder extends RecyclerView.ViewHolder {
+        final TextView vActivityName;
+        final TextView vActivityType;
+        final TextView vActivityDate;
+        final TextView vActivityTime;
+        final View view;
         public ViewAuditViewHolder(@NonNull View itemView) {
             super(itemView);
             vActivityName = itemView.findViewById(R.id.auditViewActivityName);

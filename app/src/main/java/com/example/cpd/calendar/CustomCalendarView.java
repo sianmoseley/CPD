@@ -9,9 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.Layout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,29 +23,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cpd.R;
 import com.example.cpd.calendar.Events;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class CustomCalendarView extends LinearLayout {
@@ -56,20 +44,20 @@ public class CustomCalendarView extends LinearLayout {
     TextView CurrentDate;
     GridView gridView;
     private static final int MAX_CALENDAR_DAYS = 42;
-    Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+    final Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy",Locale.ENGLISH);
-    SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM",Locale.ENGLISH);
-    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
-    SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+    final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy",Locale.ENGLISH);
+    final SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM",Locale.ENGLISH);
+    final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.ENGLISH);
+    final SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
 
 
 
 
     MyGridAdapter myGridAdapter;
     AlertDialog alertDialog;
-    List<Date> dates = new ArrayList<>();
-    List<Events> eventsList = new ArrayList<>();
+    final List<Date> dates = new ArrayList<>();
+    final List<Events> eventsList = new ArrayList<>();
     int alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinuit;
     DBOpenHelper dbOpenHelper;
 

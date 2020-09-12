@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -33,7 +32,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,14 +45,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -85,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+        //INITIALISE FIREBASE
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
@@ -103,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         View headerView = nav_view.getHeaderView(0);
         final TextView auditYear = headerView.findViewById(R.id.auditYearRef);
 
+        //SETS AUDIT YEAR IN NAVIGATION BAR
         final DocumentReference documentReference = fStore.collection("auditYear").document("xItBROZmfDnOzOpqLWSh");
 
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -118,8 +113,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
         );
 
+        //METHOD TO DISPLAY PIE CHART
         createPieChart();
 
+        //BUTTON CLICK EVENT
         addNewBtn = findViewById(R.id.addNewActivityBtn);
         addNewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,33 +129,18 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         welcomeText = findViewById(R.id.welcomeText);
 
+        //METHOD TO DISPLAY TOTAL HOUR COUNT
         countTotalCPDTime();
-
-
-        //NOTIFICATIONS
-        //CODE TO RETRIEVE DEVICE REGISTRATION TOKEN
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        // Log token
-                        //Log.d("TAG", token);
-                    }
-                });
 
 
     }
 
     private void countTotalCPDTime() {
 
+        //DATABASE REFERENCE TO ACTIVITIES
         final CollectionReference totalHours = fStore.collection("cpdActivities").document(user.getUid()).collection("myCPD");
 
+        //ADDS TOTAL ACTIVITY HOURS TOGETHER
         totalHours.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -176,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         CollectionReference totalMins = fStore.collection("cpdActivities").document(user.getUid()).collection("myCPD");
 
+        //ADDS TOTAL ACTIVITY MINUTES TOGERHER
         totalMins.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -189,11 +172,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     }
                     //Log.d("TAG", "Total mins of CPD activity is: " + totalMins);
 
+                    //CONVERTS TOTAL HOURS COUNT INTO MINUTES
                     int hoursToMins = totalHoursCount * 60;
+                    //ADDS MINUTES TOGETHER
                     int totalTimeInMins = totalMins + hoursToMins;
 
-
-
+                    //CONVERTS MINUTES INTO STRING AND SETS WELCOME TEXT VIEW
                     String totalTimeString = String.valueOf(totalTimeInMins);
                     SimpleDateFormat sdf = new SimpleDateFormat("mm");
                     try {
@@ -217,11 +201,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         //STATIC PIE DATA
         hours = new ArrayList<>();
 
+        //QUERY DATABASE FOR ACTIVITY TYPE
         Query cpdHoursFormalEducation = fStore.collection("cpdActivities")
                 .document(user.getUid())
                 .collection("myCPD")
                 .whereEqualTo("Activity_Type", "Formal Education Completed");
 
+        //CALCULATES TOTAL TIME OF ACTIVITY TYPE AND ADDS RESULT TOO PIE CHART
         cpdHoursFormalEducation.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -339,20 +325,17 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
 
-
+        //SETS PIE DATA INFORMATION
         PieDataSet pieDataSet = new PieDataSet(hours, "");
         pieDataSet.setColors(new int[] {R.color.pie_blue, R.color.pie_green, R.color.pie_yellow, R.color.pie_red, R.color.pie_purple}, this);
         pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setValueTextSize(16f);
         PieData pieData = new PieData(pieDataSet);
-
-
         pieChart.setData(pieData);
         pieChart.getDescription().setEnabled(false);
         pieChart.setEntryLabelColor(Color.parseColor("#2F334F"));
         pieChart.setCenterText("My CPD");
         pieChart.setCenterTextSize(16f);
-
         pieChart.setCenterTextColor(Color.parseColor("#2F334F"));
         pieChart.animate();
 
@@ -371,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
     }
-
+    //METHOD TO CALCULATE HOURS FROM QUERY RESULTS
     private float calcHours(QuerySnapshot result) {
        totalHours = 0;
         for (QueryDocumentSnapshot document: result){
@@ -383,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     }
 
+    //METHOD TO CALCULATE MINUTES FROM QUERY RESULT
     private float calcMins(QuerySnapshot result) {
         totalMins = 0;
         for (QueryDocumentSnapshot document: result){
@@ -396,6 +380,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
 
+    //DRAWER NAVIGATION MENU
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         //CLOSES THE DRAWER WHEN ITEM IS CLICKED
@@ -446,8 +431,5 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         return false;
     }
-
-
-
 
 }
